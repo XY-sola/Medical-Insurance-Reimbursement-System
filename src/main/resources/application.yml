@@ -1,0 +1,27 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /medicare
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/medicare?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: mm
+    password: 123456
+  cache:
+    type: redis
+    redis:
+      time-to-live: 20000
+      cache-null-values: false
+mybatis-plus:
+  mapper-locations: org/xy/medicare/dao/*/xml
+  type-aliases-package: org.xy.medicare.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    jdbc-type-for-null: 'null'
+    default-statement-timeout: 3000
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      update-strategy: ignored
