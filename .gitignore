@@ -1,0 +1,10 @@
+# Default ignored files
+/shelf/
+/.idea/
+/.gradle/
+/build
+# Datasource local storage ignored files
+/../../../../../:\Idea\ideaspace\Medical-Insurance-Reimbursement-System\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
