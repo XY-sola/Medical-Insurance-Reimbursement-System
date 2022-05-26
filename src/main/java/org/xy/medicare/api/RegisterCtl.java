@@ -6,11 +6,10 @@ import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
 import org.xy.medicare.form.RegisterForm;
 import org.xy.medicare.service.impl.MedicareCardServiceImpl;
-import org.xy.medicare.service.impl.RegisterServiceImpl;
+import org.xy.medicare.service.impl.UserServiceImpl;
 import org.xy.medicare.service.impl.WorkerServiceImpl;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +25,7 @@ public class RegisterCtl {
 
     //自动封装服务层对象
     @Autowired
-    private RegisterServiceImpl ser1;
+    private UserServiceImpl ser1;
     @Autowired
     private MedicareCardServiceImpl ser2;
     @Autowired
@@ -57,11 +56,13 @@ public class RegisterCtl {
             return ResponseResult.getMessageResult(null, "A007");
         }
         Map<String, String> map = ser1.userRegister(form.getAccount(), form.getPassword(),form.getUserRole());
-        if ("1".equals(map.get("res"))) {
-            return ResponseResult.getMessageResult(null, "A010", StatusCode.C200);
-        } else {
+        if ("-1".equals(map.get("res"))) {
             //账户已注册
             return ResponseResult.getMessageResult(null, "A006");
+        } else if ("1".equals(map.get("res"))){
+            return ResponseResult.getMessageResult(null, "A010", StatusCode.C200);
+        } else{
+            return ResponseResult.getMessageResult(null, "A011");
         }
     }
 }

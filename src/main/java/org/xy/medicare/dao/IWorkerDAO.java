@@ -1,6 +1,8 @@
 package org.xy.medicare.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Select;
 import org.xy.medicare.entity.Worker;
 
 /**
@@ -10,4 +12,9 @@ import org.xy.medicare.entity.Worker;
  */
 
 public interface IWorkerDAO extends BaseMapper<Worker> {
+
+    @Select("SELECT worker_identity_num " +
+            "FROM worker " +
+            "WHERE worker_num = #{workerNum}; ")
+    public String selectIdentityNumByWorkerNum(@Param("workerNum") String workerNum);
 }

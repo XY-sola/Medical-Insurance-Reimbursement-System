@@ -6,7 +6,7 @@ import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
 import org.xy.medicare.common.security.utils.JwtTokenUtil;
 import org.xy.medicare.form.LoginForm;
-import org.xy.medicare.service.impl.LoginServiceImpl;
+import org.xy.medicare.service.impl.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class LoginCtl {
 
     //自动封装服务层对象
     @Autowired
-    private LoginServiceImpl ser;
+    private UserServiceImpl ser;
 
     //封装token的工具类
     @Autowired

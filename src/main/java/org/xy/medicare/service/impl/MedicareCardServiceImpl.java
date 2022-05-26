@@ -20,4 +20,10 @@ public class MedicareCardServiceImpl extends ServiceImpl<IMedicareCardDAO, Medic
     public int countMedicareCardByAccount(String account){
         return query().eq("medicare_card_num",account).count();
     }
+
+    @Override
+    public String findMedicareCardIdentityNumByAccount(String account){
+        return baseMapper.selectIdentityCardNumByMedicareCardNum(account);
+    }
+
 }

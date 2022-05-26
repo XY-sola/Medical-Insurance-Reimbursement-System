@@ -19,4 +19,9 @@ public class WorkerServiceImpl extends ServiceImpl<IWorkerDAO, Worker> implement
     public int countWorkerByAccount(String account){
         return query().eq("worker_num", account).count();
     }
+
+    @Override
+    public String findWorkerIdentityNumByAccount(String account){
+        return baseMapper.selectIdentityNumByWorkerNum(account);
+    }
 }

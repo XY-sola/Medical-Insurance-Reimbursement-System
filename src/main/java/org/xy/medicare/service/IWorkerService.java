@@ -12,6 +12,7 @@ import java.util.Map;
  */
 
 public interface IWorkerService extends IService<Worker> {
+
     /**
      * 根据账号查找审批人员数量并返回结果
      *
@@ -19,4 +20,12 @@ public interface IWorkerService extends IService<Worker> {
      * @return 此人员的个数
      */
     public int countWorkerByAccount(String account);
+
+    /**
+     * 根据账号查找审批人员身份证号并返回结果
+     *
+     * @param account 账号
+     * @return 身份证号
+     */
+    public String findWorkerIdentityNumByAccount(String account);
 }

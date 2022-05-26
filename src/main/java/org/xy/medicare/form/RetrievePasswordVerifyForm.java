@@ -6,21 +6,21 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @description:Login页面的表单
+ * @description:RetrievePasswordVerify页面的表单
  * @author: XY-GYL
- * @time: 2022/5/24 11:07
+ * @time: 2022/5/26 17:43
  */
 
 @Data
-public class LoginForm {
+public class RetrievePasswordVerifyForm {
 
     //账号
     @NotBlank
-    @Length(min =3 ,max = 16)
+    @Length(min = 6, max = 16)
     private String account;
 
-    //密码
+    //身份证号
     @NotBlank
-    @Length(min = 8,max = 20)
-    private String password;
+    @Length(min = 18, max = 18)
+    private String identityCardNum;
 }

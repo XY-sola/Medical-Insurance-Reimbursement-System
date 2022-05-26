@@ -1,6 +1,8 @@
 package org.xy.medicare.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Select;
 import org.xy.medicare.entity.MedicareCard;
 
 /**
@@ -10,4 +12,9 @@ import org.xy.medicare.entity.MedicareCard;
  */
 
 public interface IMedicareCardDAO extends BaseMapper<MedicareCard> {
+
+    @Select("SELECT identity_card_num " +
+            "FROM medicare_card " +
+            "WHERE medicare_card_num = #{medicareCardNum}; ")
+    public String selectIdentityCardNumByMedicareCardNum(@Param("medicareCardNum") String medicareCardNum);
 }

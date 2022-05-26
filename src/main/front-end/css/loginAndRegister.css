@@ -54,17 +54,6 @@ button {
     margin: 0;
 }
 
-fieldset {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -250px 0 0 -350px;
-    width: 700px;
-    height: 500px;
-    background-color: lightskyblue;
-    border-radius: 20px;
-}
-
 a {
     font-size: 18px;
     color: black;
@@ -81,10 +70,16 @@ a:visited {
     text-decoration: underline mediumpurple;
 }
 
-.register_div {
+.font_div {
     position: relative;
     left: 15%;
     height: 68px;
+}
+
+.font_div2 {
+    position: relative;
+    left: 13%;
+    height: 70px;
 }
 
 .register_radio{
@@ -107,6 +102,28 @@ a:visited {
     text-shadow: 0 0 60px green;
     letter-spacing: 2px;
     text-align: center;
+}
+
+#register_panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0 0 -350px;
+    width: 700px;
+    height: 500px;
+    background-color: lightskyblue;
+    border-radius: 20px;
+}
+
+#retrieve_password_panel{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -240px 0 0 -330px;
+    width: 660px;
+    height: 480px;
+    background-color: lightskyblue;
+    border-radius: 12px;
 }
 
 

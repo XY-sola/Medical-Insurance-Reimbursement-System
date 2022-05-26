@@ -4,16 +4,15 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
- * @description:Register页面的表单
+ * @description:RetrievePasswordModify页面的表单
  * @author: XY-GYL
- * @time: 2022/5/26 14:31
+ * @time: 2022/5/26 20:40
  */
 
 @Data
-public class RegisterForm {
+public class RetrievePasswordModifyForm {
 
     //账号
     @NotBlank
@@ -29,8 +28,4 @@ public class RegisterForm {
     @NotBlank
     @Length(min=8,max=20)
     private String passwordRepeat;
-
-    //用户角色
-    @NotNull
-    private Integer userRole;
 }

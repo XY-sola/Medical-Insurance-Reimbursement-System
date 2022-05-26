@@ -6,63 +6,61 @@
     <link rel="stylesheet" type="text/css" href="../css/loginAndRegister.css"/>
 </head>
 <body>
-<div id="register_panel">
-    <fieldset>
-        <h1>用户注册</h1>
-        <div class="register_div">
-            <h2>账号：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
-            <input type="text"
-                   v-model="param.account"
-                   @blur="check(1)"
-                   @focus="clear(1)"
-                   style=""/>
-            &nbsp&nbsp
-            <span style="color: red"
-                  v-if="errorFlg.accountFlg">{{errorMsg.accountMsg}}</span>
-        </div>
-        <div class="register_div">
-            <h2>密码：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
-            <input type="password"
-                   v-model="param.password"
-                   @blur="check(2)"
-                   @focus="clear(2)"
-                   style=""/>
-            &nbsp&nbsp
-            <span style="color: red"
-                  v-if="errorFlg.passwordFlg">{{errorMsg.passwordMsg}}</span>
-        </div>
-        <div class="register_div">
-            <h2>确认密码：</h2>
-            <input type="password"
-                   v-model="param.passwordRepeat"
-                   @blur="check(3)"
-                   @focus="clear(3)"
-                   style=""/>
-            &nbsp&nbsp
-            <span style="color: red"
-                  v-if="errorFlg.passwordRepeatFlg">{{errorMsg.passwordRepeatMsg}}</span>
-        </div>
-        <div class="register_div">
-            <h2>用户类型：</h2>
-            <input class="register_radio"
-                   type="radio"
-                   name="inputUserRole"
-                   value="generalUser"
-                   @click="clickRole(1)">普通用户
-            <input class="register_radio"
-                   type="radio"
-                   name="inputUserRole"
-                   value="worker"
-                   @click="clickRole(2)">审批人员
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <span style="color: red"
-                  v-if="errorFlg.userRoleFlg">{{errorMsg.userRoleMsg}}</span>
-        </div>
-        <button style="position: absolute; top:78%; left:40%;"
-                @click="registerUser">注册
-        </button>
-    </fieldset>
-</div>
+<fieldset id="register_panel">
+    <h1>用户注册</h1>
+    <div class="font_div">
+        <h2>账号：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+        <input type="text"
+               v-model="param.account"
+               @blur="check(1)"
+               @focus="clear(1)"
+               style=""/>
+        &nbsp&nbsp
+        <span style="color: red"
+              v-if="errorFlg.accountFlg">{{errorMsg.accountMsg}}</span>
+    </div>
+    <div class="font_div">
+        <h2>密码：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+        <input type="password"
+               v-model="param.password"
+               @blur="check(2)"
+               @focus="clear(2)"
+               style=""/>
+        &nbsp&nbsp
+        <span style="color: red"
+              v-if="errorFlg.passwordFlg">{{errorMsg.passwordMsg}}</span>
+    </div>
+    <div class="font_div">
+        <h2>确认密码：</h2>
+        <input type="password"
+               v-model="param.passwordRepeat"
+               @blur="check(3)"
+               @focus="clear(3)"
+               style=""/>
+        &nbsp&nbsp
+        <span style="color: red"
+              v-if="errorFlg.passwordRepeatFlg">{{errorMsg.passwordRepeatMsg}}</span>
+    </div>
+    <div class="font_div">
+        <h2>用户类型：</h2>
+        <input class="register_radio"
+               type="radio"
+               name="inputUserRole"
+               value="generalUser"
+               @click="clickRole(1)">普通用户
+        <input class="register_radio"
+               type="radio"
+               name="inputUserRole"
+               value="worker"
+               @click="clickRole(2)">审批人员
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <span style="color: red"
+              v-if="errorFlg.userRoleFlg">{{errorMsg.userRoleMsg}}</span>
+    </div>
+    <button style="position: absolute; top:78%; left:40%;"
+            @click="registerUser">注册
+    </button>
+</fieldset>
 <script type="text/javascript" src="../js/axios.js"></script>
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript" src="../js/message.js"></script>
@@ -219,7 +217,14 @@
                         self.blank(1);
                         self.blank(2);
                         self.blank(3);
-                    } else if (res.data.msgId == "A010") {
+                    } else if (res.data.msgId == "A011") {
+                        self.errorFlg.registerFlag = true;
+                        self.errorMsg.registerMsg = message.A011;
+                        alert('注册失败');
+                        self.blank(1);
+                        self.blank(2);
+                        self.blank(3);
+                    }else if (res.data.msgId == "A010") {
                         // 注册成功
                         alert('注册成功');
                         location.replace('./login.html');
