@@ -1,0 +1,92 @@
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    background-color: #FFFFFF;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0.67em 0;
+}
+
+h2 {
+    display: inline;
+    vertical-align: center;
+}
+
+input {
+    width: 278px;
+    height: 18px;
+    margin-bottom: 10px;
+    outline: none;
+    padding: 10px;
+    font-size: 13px;
+    color: #000000;
+    text-shadow: 1px 1px 1px;
+    border-top: 1px solid #312E3D;
+    border-left: 1px solid #312E3D;
+    border-right: 1px solid #312E3D;
+    border-bottom: 1px solid #56536A;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+}
+
+button {
+    width: 100px;
+    min-height: 20px;
+    display: block;
+    background-color: #4a77d4;
+    border: 1px solid #3762bc;
+    color: #fff;
+    padding: 9px 14px;
+    font-size: 20px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+}
+
+a {
+    font-size: 18px;
+    color: black;
+    text-decoration: underline black;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline red;
+}
+
+a:visited {
+    color: mediumpurple;
+    text-decoration: underline mediumpurple;
+}
+
+#login_panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -190px 0 0 -250px;
+    width: 500px;
+    height: 380px;
+    background-color: lightskyblue;
+    border-radius: 20px;
+}
+
+#login_panel h1 {
+    color: white;
+    text-shadow: 0 0 60px green;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+
+
+

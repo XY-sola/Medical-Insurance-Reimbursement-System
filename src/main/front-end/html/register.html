@@ -2,45 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" type="text/css" href="../css/loginAndRegister.css"/>
 </head>
 <body>
-<div id="login_panel">
-    <h1>医疗保险报销系统</h1>
-    <form method="post">
-        <div style="position: absolute; top:40%; left:10%">
-            <h2>账号：</h2>
-            <input type="text"
-                   v-model="param.account"
-                   @blur="check(1)"
-                   @focus="clear(1)"
-                   required oninvalid="setCustomValidity('请输入账号');"
-                   oninput="setCustomValidity('');"
-                   placeholder="请输入账号"
-                   name="account"/>
-        </div>
-        <div style="position: absolute; top:60%; left:10%">
-            <h2>密码：</h2>
-            <input type="password"
-                   v-model="param.password"
-                   @blur="check(2)"
-                   @focus="clear(2)"
-                   required oninvalid="setCustomValidity('请输入密码');"
-                   oninput="setCustomValidity('');"
-                   placeholder="请输入密码"
-                   name="password"/>
-        </div>
-        <button style="position: absolute; top:80%; left:15%"
-                @click="login()" type="button">登录
-        </button>
-        <button style="position: absolute; top:80%; left:40%"
-                @click="jumpToRegister()" type="button">注册
-        </button>
-        <a style="position: absolute; top:82%; left:65%"
-           href="500.html">找回密码</a>
-    </form>
-</div>
+<fieldset style="margin-top: 100px; border-radius: 10px; border-color: #5555FF;">
+    <legend style="text-align: center; color:#5555FF;font-size: 35px;">就诊详情录入</legend>
+    <legend style="text-align: center; color:#5555FF;font-size: 25px;">药品</legend>
+    <div class="form-group">
+        <label>药品编号*:</label>
+        <input type="text" v-model="drug.code" @blur="getDrug()"/>
+        <span class="msg" v-if="drug.codeFlag">{{drug.codeMsg}}</span>
+    </div>
+    <div class="form-group">
+        <label>药品名:</label>
+        <input type="text" readonly="true" v-model="drug.name"/>
+    </div>
+    <div class="form-group">
+        <label>数量*:</label>
+        <input type="text" v-model="drug.quantity" @blur="drugQuantityCheck()"/>
+        <span class="msg" v-if="drug.quantityFlag">{{drug.quantityMsg}}</span>
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button style="font-size: 15px;" @click="addDrug()">添加药品记录</button>
+        <span></span>
+    </div>
+    <legend style="text-align: center; color:#5555FF;font-size: 25px;">项目</legend>
+    <div class="form-group">
+        <label>项目编号*:</label>
+        <input type="text" v-model="project.code" @blur="getProject()"/>
+        <span class="msg" v-if="project.codeFlag">{{project.codeMsg}}</span>
+    </div>
+    <div class="form-group">
+        <label>项目名:</label>
+        <input type="text" readonly="true" v-model="project.name"/>
+    </div>
+    <div class="form-group">
+        <label>次数*:</label>
+        <input type="text" v-model="project.quantity" @blur="projectQuantityCheck()"/>
+        <span class="msg" v-if="project.quantityFlag">{{project.quantityMsg}}</span>
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button style="font-size: 15px;" @click="addProject()">添加项目记录</button>
+        <span></span>
+    </div>
+    <div class="form-group">
+        <label></label>
+        <button style="font-size: 15px;" @click="done()">完成</button>
+        <span></span>
+    </div>
+</fieldset>
 <script type="text/javascript" src="../js/axios.js"></script>
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript" src="../js/message.js"></script>
@@ -101,29 +114,26 @@
                     if (res.data.msgId == "A001") {
                         self.errorFlg.loginFlg = true;
                         self.errorMsg.loginMsg = message.A001;
-                        alert('您输入的用户名不存在');
-                        this.clear(1);
-                        this.clear(2);
+                        alert('您输入的用户名不存在,此处是个alert');
                     } else if (res.data.msgId == "A002") {
                         self.errorFlg.loginFlg = true;
                         self.errorMsg.loginMsg = message.A002;
-                        alert('密码错误');
-                        this.clear(2);
+                        alert('密码错误,此处是个alert');
                     } else if (res.data.msgId == "A003") {
                         // 管理员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
-                        location.replace('./admin/welcome.html');
+                        alert('管理员登录成功');
                     } else if (res.data.msgId == "A004") {
                         // 审批人员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
-                        location.replace('./worker/welcome.html');
+                        location.replace('500.html');
                     } else if (res.data.msgId == "A005") {
                         // 普通用户登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
-                        location.replace('./generalUser/welcome.html');
+                        location.replace('500.html');
                     }
                 }).catch(error => {
                     location.href = "./500.html";
