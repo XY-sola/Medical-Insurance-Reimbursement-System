@@ -15,6 +15,7 @@ body {
 h1 {
     font-size: 3em;
     margin: 0.67em 0;
+    text-align: center;
 }
 
 h2 {
@@ -53,6 +54,17 @@ button {
     margin: 0;
 }
 
+fieldset {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0 0 -350px;
+    width: 700px;
+    height: 500px;
+    background-color: lightskyblue;
+    border-radius: 20px;
+}
+
 a {
     font-size: 18px;
     color: black;
@@ -67,6 +79,16 @@ a:hover {
 a:visited {
     color: mediumpurple;
     text-decoration: underline mediumpurple;
+}
+
+.register_div {
+    position: relative;
+    left: 15%;
+    height: 68px;
+}
+
+.register_radio{
+    width:50px;
 }
 
 #login_panel {

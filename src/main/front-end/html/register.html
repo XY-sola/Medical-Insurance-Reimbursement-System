@@ -6,142 +6,228 @@
     <link rel="stylesheet" type="text/css" href="../css/loginAndRegister.css"/>
 </head>
 <body>
-<fieldset style="margin-top: 100px; border-radius: 10px; border-color: #5555FF;">
-    <legend style="text-align: center; color:#5555FF;font-size: 35px;">就诊详情录入</legend>
-    <legend style="text-align: center; color:#5555FF;font-size: 25px;">药品</legend>
-    <div class="form-group">
-        <label>药品编号*:</label>
-        <input type="text" v-model="drug.code" @blur="getDrug()"/>
-        <span class="msg" v-if="drug.codeFlag">{{drug.codeMsg}}</span>
-    </div>
-    <div class="form-group">
-        <label>药品名:</label>
-        <input type="text" readonly="true" v-model="drug.name"/>
-    </div>
-    <div class="form-group">
-        <label>数量*:</label>
-        <input type="text" v-model="drug.quantity" @blur="drugQuantityCheck()"/>
-        <span class="msg" v-if="drug.quantityFlag">{{drug.quantityMsg}}</span>
-    </div>
-    <div class="form-group">
-        <label></label>
-        <button style="font-size: 15px;" @click="addDrug()">添加药品记录</button>
-        <span></span>
-    </div>
-    <legend style="text-align: center; color:#5555FF;font-size: 25px;">项目</legend>
-    <div class="form-group">
-        <label>项目编号*:</label>
-        <input type="text" v-model="project.code" @blur="getProject()"/>
-        <span class="msg" v-if="project.codeFlag">{{project.codeMsg}}</span>
-    </div>
-    <div class="form-group">
-        <label>项目名:</label>
-        <input type="text" readonly="true" v-model="project.name"/>
-    </div>
-    <div class="form-group">
-        <label>次数*:</label>
-        <input type="text" v-model="project.quantity" @blur="projectQuantityCheck()"/>
-        <span class="msg" v-if="project.quantityFlag">{{project.quantityMsg}}</span>
-    </div>
-    <div class="form-group">
-        <label></label>
-        <button style="font-size: 15px;" @click="addProject()">添加项目记录</button>
-        <span></span>
-    </div>
-    <div class="form-group">
-        <label></label>
-        <button style="font-size: 15px;" @click="done()">完成</button>
-        <span></span>
-    </div>
-</fieldset>
+<div id="register_panel">
+    <fieldset>
+        <h1>用户注册</h1>
+        <div class="register_div">
+            <h2>账号：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+            <input type="text"
+                   v-model="param.account"
+                   @blur="check(1)"
+                   @focus="clear(1)"
+                   style=""/>
+            &nbsp&nbsp
+            <span style="color: red"
+                  v-if="errorFlg.accountFlg">{{errorMsg.accountMsg}}</span>
+        </div>
+        <div class="register_div">
+            <h2>密码：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+            <input type="password"
+                   v-model="param.password"
+                   @blur="check(2)"
+                   @focus="clear(2)"
+                   style=""/>
+            &nbsp&nbsp
+            <span style="color: red"
+                  v-if="errorFlg.passwordFlg">{{errorMsg.passwordMsg}}</span>
+        </div>
+        <div class="register_div">
+            <h2>确认密码：</h2>
+            <input type="password"
+                   v-model="param.passwordRepeat"
+                   @blur="check(3)"
+                   @focus="clear(3)"
+                   style=""/>
+            &nbsp&nbsp
+            <span style="color: red"
+                  v-if="errorFlg.passwordRepeatFlg">{{errorMsg.passwordRepeatMsg}}</span>
+        </div>
+        <div class="register_div">
+            <h2>用户类型：</h2>
+            <input class="register_radio"
+                   type="radio"
+                   name="inputUserRole"
+                   value="generalUser"
+                   @click="clickRole(1)">普通用户
+            <input class="register_radio"
+                   type="radio"
+                   name="inputUserRole"
+                   value="worker"
+                   @click="clickRole(2)">审批人员
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <span style="color: red"
+                  v-if="errorFlg.userRoleFlg">{{errorMsg.userRoleMsg}}</span>
+        </div>
+        <button style="position: absolute; top:78%; left:40%;"
+                @click="registerUser">注册
+        </button>
+    </fieldset>
+</div>
 <script type="text/javascript" src="../js/axios.js"></script>
 <script type="text/javascript" src="../js/vue.js"></script>
 <script type="text/javascript" src="../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#login_panel",
+        el: "#register_panel",
         data: {
             param: {
                 "account": "",
-                "password": ""
+                "password": "",
+                "passwordRepeat": "",
+                "userRole": ""
             },
             errorFlg: {
                 "accountFlg": false,
                 "passwordFlg": false,
-                "loginFlag": false
+                "passwordRepeatFlg": false,
+                "userRoleFlg": false,
+                "registerFlag": false
             },
             errorMsg: {
                 "accountMsg": "",
                 "passwordMsg": "",
-                "loginMsg": ""
+                "passwordRepeatMsg": "",
+                "userRoleMsg": "",
+                "registerMsg": ""
             }
         },
         methods: {
             check: function (type) {
+                //核查账号、密码、确认密码是否有问题
                 if (type == 1) {
+                    var reg1 = /[^0-9]/;
+                    var reg2 = /^[0-9]{6,}$/;
+                    var reg3 = /^[0-9]{0,16}$/;
                     if (this.param.account == null || this.param.account == "") {
                         this.errorFlg.accountFlg = true;
-                        this.errorMsg.accountMsg = "请输入用户名";
+                        this.errorMsg.accountMsg = "请输入账号";
+                    } else if (reg1.test(this.param.account)) {
+                        this.errorFlg.accountFlg = true;
+                        this.errorMsg.accountMsg = "账号中含有字符";
+                    } else if (!reg2.test(this.param.account)) {
+                        this.errorFlg.accountFlg = true;
+                        this.errorMsg.accountMsg = "账号长度短于6位";
+                    } else if (!reg3.test(this.param.account)) {
+                        this.errorFlg.accountFlg = true;
+                        this.errorMsg.accountMsg = "账号长度长于16位";
                     }
                 } else if (type == 2) {
+                    var reg1 = /[^0-9a-zA-Z]/;
+                    var reg2 = /^[0-9a-zA-Z]{8,}$/;
+                    var reg3 = /^[0-9a-zA-Z]{0,20}$/;
                     if (this.param.password == null || this.param.password == "") {
                         this.errorFlg.passwordFlg = true;
                         this.errorMsg.passwordMsg = "请输入密码";
+                    } else if (reg1.test(this.param.password)) {
+                        this.errorFlg.passwordFlg = true;
+                        this.errorMsg.passwordMsg = "密码中含有特殊字符";
+                    } else if (!reg2.test(this.param.password)) {
+                        this.errorFlg.passwordFlg = true;
+                        this.errorMsg.passwordMsg = "密码长度短于8位";
+                    } else if (!reg3.test(this.param.password)) {
+                        this.errorFlg.passwordFlg = true;
+                        this.errorMsg.passwordMsg = "密码长度长于20位";
+                    }
+                } else if (type == 3) {
+                    if (this.param.passwordRepeat == null || this.param.passwordRepeat == "") {
+                        this.errorFlg.passwordRepeatFlg = true;
+                        this.errorMsg.passwordRepeatMsg = "请确认密码";
+                    } else if (this.param.password != this.param.passwordRepeat) {
+                        this.errorFlg.passwordRepeatFlg = true;
+                        this.errorMsg.passwordRepeatMsg = "密码不一致";
+                    }
+                } else if (type == 4) {
+                    if (this.param.userRole == null || this.param.userRole == "") {
+                        this.errorFlg.userRoleFlg = true;
+                        this.errorMsg.userRoleMsg = "请选择用户角色";
                     }
                 }
             },
             clear: function (type) {
+                //清楚错误状态
                 if (type == 1) {
                     this.errorFlg.accountFlg = false;
                     this.errorMsg.accountMsg = "";
                 } else if (type == 2) {
                     this.errorFlg.passwordFlg = false;
                     this.errorMsg.passwordMsg = "";
+                } else if (type == 3) {
+                    this.errorFlg.passwordRepeatFlg = false;
+                    this.errorMsg.passwordRepeatMsg = "";
                 }
             },
-            login: function () {
+            clickRole: function (type) {
+                if (type == 1) {
+                    //普通用户
+                    this.param.userRole = 2;
+                } else if (type == 2) {
+                    //审批人员
+                    this.param.userRole = 1;
+                }
+                this.errorFlg.userRoleFlg = false;
+                this.errorMsg.userRoleMsg = false;
+            },
+            blank: function (type) {
+                if (type == 1) {
+                    this.param.account = "";
+                } else if (type == 2) {
+                    this.param.password = "";
+                } else if (type == 3) {
+                    this.param.passwordRepeat = "";
+                }
+            },
+            registerUser: function () {
                 this.check(1);
                 this.check(2);
-                if (this.errorFlg.accountFlg || this.errorFlg.passwordFlg) {
+                this.check(3);
+                this.check(4);
+                if (this.errorFlg.accountFlg || this.errorFlg.passwordFlg || this.errorFlg.passwordRepeatFlg || this.errorFlg.userRoleFlg) {
                     return;
                 }
                 var self = this;
-                axios.post("http://localhost:8000/medicare/api/login", {
+                axios.post("http://localhost:8000/medicare/api/register", {
                     "account": this.param.account,
-                    "password": this.param.password
+                    "password": this.param.password,
+                    "passwordRepeat": this.param.passwordRepeat,
+                    "userRole": this.param.userRole
                 }).then(res => {
                     console.log(res.data);
-                    if (res.data.msgId == "A001") {
-                        self.errorFlg.loginFlg = true;
-                        self.errorMsg.loginMsg = message.A001;
-                        alert('您输入的用户名不存在,此处是个alert');
-                    } else if (res.data.msgId == "A002") {
-                        self.errorFlg.loginFlg = true;
-                        self.errorMsg.loginMsg = message.A002;
-                        alert('密码错误,此处是个alert');
-                    } else if (res.data.msgId == "A003") {
-                        // 管理员登录成功
-                        sessionStorage.setItem("authToken", res.data.result.authToken);
-                        sessionStorage.setItem("userRole", res.data.result.userRole);
-                        alert('管理员登录成功');
-                    } else if (res.data.msgId == "A004") {
-                        // 审批人员登录成功
-                        sessionStorage.setItem("authToken", res.data.result.authToken);
-                        sessionStorage.setItem("userRole", res.data.result.userRole);
-                        location.replace('500.html');
-                    } else if (res.data.msgId == "A005") {
-                        // 普通用户登录成功
-                        sessionStorage.setItem("authToken", res.data.result.authToken);
-                        sessionStorage.setItem("userRole", res.data.result.userRole);
-                        location.replace('500.html');
+                    if (res.data.msgId == "A006") {
+                        self.errorFlg.registerFlag = true;
+                        self.errorMsg.registerMsg = message.A006;
+                        alert('账号已注册');
+                        self.blank(1);
+                        self.blank(2);
+                        self.blank(3);
+                    } else if (res.data.msgId == "A007") {
+                        self.errorFlg.registerFlag = true;
+                        self.errorMsg.registerMsg = message.A007;
+                        alert('密码不一致');
+                        self.blank(2);
+                        self.blank(3);
+                    } else if (res.data.msgId == "A008") {
+                        self.errorFlg.registerFlag = true;
+                        self.errorMsg.registerMsg = message.A008;
+                        alert('无此医保人员');
+                        self.blank(1);
+                        self.blank(2);
+                        self.blank(3);
+                    } else if (res.data.msgId == "A009") {
+                        self.errorFlg.registerFlag = true;
+                        self.errorMsg.registerMsg = message.A009;
+                        alert('无此审批人员');
+                        self.blank(1);
+                        self.blank(2);
+                        self.blank(3);
+                    } else if (res.data.msgId == "A010") {
+                        // 注册成功
+                        alert('注册成功');
+                        location.replace('./login.html');
                     }
                 }).catch(error => {
                     location.href = "./500.html";
                 });
             },
-            jumpToRegister: function () {
-                location.href = "./500.html";
-            }
         }
     })
 </script>
