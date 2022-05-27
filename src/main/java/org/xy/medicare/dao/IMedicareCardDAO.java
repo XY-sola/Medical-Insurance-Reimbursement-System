@@ -17,4 +17,10 @@ public interface IMedicareCardDAO extends BaseMapper<MedicareCard> {
             "FROM medicare_card " +
             "WHERE medicare_card_num = #{medicareCardNum}; ")
     public String selectIdentityCardNumByMedicareCardNum(@Param("medicareCardNum") String medicareCardNum);
+
+    @Select("SELECT medicare_name " +
+            "FROM medicare_card " +
+            "WHERE medicare_card_num = #{medicareCardNum}; ")
+    public String selectMedicareNameByMedicareCardNum(@Param("medicareCardNum") String medicareCardNum);
+
 }

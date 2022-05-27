@@ -26,4 +26,9 @@ public class MedicareCardServiceImpl extends ServiceImpl<IMedicareCardDAO, Medic
         return baseMapper.selectIdentityCardNumByMedicareCardNum(account);
     }
 
+    @Override
+    public String findMedicareNameByAccount(String account){
+        return baseMapper.selectMedicareNameByMedicareCardNum(account);
+    }
+
 }

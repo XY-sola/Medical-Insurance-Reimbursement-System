@@ -2,9 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Welcome</title>
+    <link rel="stylesheet" type="text/css" href="../../css/menu.css">
 </head>
 <body>
-<h1>管理员登录</h1>
+<div class="all" id="welcome">
+    <!-- 顶部栏 -->
+    <div class="header_nav">
+        <h1>医疗保险报销系统</h1>
+        <a @click="logout()">注销</a>
+    </div>
+    <!-- 主体内容 -->
+    <div class="area row main">
+        <!-- 左边框（侧边栏） -->
+        <div class="area sidebar">
+            <div class="sidebarHead">
+                <div class="container">
+                    <img src="../../img/001.jpg" alt="头像">
+                </div>
+                <ul>
+                    <li>{{param.userName}}</li>
+                    <li>{{param.userRole}}</li>
+                </ul>
+            </div>
+            <div class="sidebarBody">
+                <ul>
+                    <li><a href="./userInformation.html">用户信息维护</a></li>
+                    <li><a href="./medicareCardInformation.html">医保人员信息维护</a></li>
+                    <li><a href="./workerInformation.html">审批人员信息维护</a></li>
+                    <li><a href="./medicineInformation.html">药品信息维护</a></li>
+                    <li><a href="./treatmentProjectInformation.html">诊疗项目信息维护</a></li>
+                    <li><a href="./serviceFacilityInformation.html">服务设施信息维护</a></li>
+                    <li><a href="./institutionInformation.html">定点机构信息维护</a></li>
+                    <li><a href="./strategyInformation.html">报销策略维护</a></li>
+                    <li><a href="./systemBankAccoutInformation.html">报销账户维护</a></li>
+                    <li><a href="./recordingInformation.html">报销记录维护</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 右侧详细信息 -->
+        <div class="area main_block">
+            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        </div>
+    </div>
+    <!-- 页脚 -->
+    <div class="area footer">
+        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+    </div>
+</div>
+<script type="text/javascript" src="../../js/axios.js"></script>
+<script type="text/javascript" src="../../js/vue.js"></script>
+<script type="text/javascript" src="../../js/message.js"></script>
+<script>
+    var vue = new Vue({
+        el: "#welcome",
+        data: {
+            param: {
+                "userRole":"身份",
+                "userName":"",
+                "systemDate":"",
+            },
+            errorFlg: {
+                "accountFlg": false,
+                "loginFlag": false
+            },
+            errorMsg: {
+                "accountMsg": "",
+                "loginMsg": ""
+            }
+        },
+        mounted:function (){
+            var userRole=sessionStorage.getItem("userRole");
+            var userName=sessionStorage.getItem("userName");
+            this.param.userName=userName;
+            if(userRole==0){
+                this.param.userRole="管理员";
+            }else if(userRole==1){
+                this.param.userRole="审批人员";
+            }else if(userRole==2){
+                this.param.userRole="医保人员";
+            }
+            var systemDate = new Date();
+            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+        },
+        methods: {
+            logout: function () {
+                if (confirm("是否退出登录？")) {
+                    sessionStorage.clear();
+                    location.replace("../login.html");
+                }
+            }
+        }
+    })
+</script>
 </body>
 </html>

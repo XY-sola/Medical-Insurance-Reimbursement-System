@@ -6,7 +6,9 @@ import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
 import org.xy.medicare.common.security.utils.JwtTokenUtil;
 import org.xy.medicare.form.LoginForm;
+import org.xy.medicare.service.impl.MedicareCardServiceImpl;
 import org.xy.medicare.service.impl.UserServiceImpl;
+import org.xy.medicare.service.impl.WorkerServiceImpl;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -26,6 +28,10 @@ public class LoginCtl {
     //自动封装服务层对象
     @Autowired
     private UserServiceImpl ser;
+    @Autowired
+    private MedicareCardServiceImpl ser2;
+    @Autowired
+    private WorkerServiceImpl ser3;
 
     //封装token的工具类
     @Autowired
@@ -47,12 +53,15 @@ public class LoginCtl {
             res.put("userRole", map.get("user_role"));
             if ("0".equals(map.get("user_role"))) {
                 //0 管理员
+                res.put("userName", "000");
                 return ResponseResult.getMessageResult(res, "A003", StatusCode.C200);
             } else if ("1".equals(map.get("user_role"))) {
                 //1 审批人员
+                res.put("userName", ser3.findWorkerNameByAccount(form.getAccount()));
                 return ResponseResult.getMessageResult(res, "A004", StatusCode.C200);
             } else {
                 //2 普通用户
+                res.put("userName", ser2.findMedicareNameByAccount(form.getAccount()));
                 return ResponseResult.getMessageResult(res, "A005", StatusCode.C200);
             }
         } else if ("-1".equals(map.get("res"))) {

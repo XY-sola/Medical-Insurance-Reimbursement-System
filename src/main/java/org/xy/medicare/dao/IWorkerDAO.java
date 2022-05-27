@@ -17,4 +17,9 @@ public interface IWorkerDAO extends BaseMapper<Worker> {
             "FROM worker " +
             "WHERE worker_num = #{workerNum}; ")
     public String selectIdentityNumByWorkerNum(@Param("workerNum") String workerNum);
+
+    @Select("SELECT worker_name " +
+            "FROM worker " +
+            "WHERE worker_num = #{workerNum}; ")
+    public String selectWorkerNameByWorkerNum(@Param("workerNum") String workerNum);
 }

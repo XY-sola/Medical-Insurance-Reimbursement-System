@@ -24,4 +24,10 @@ public class WorkerServiceImpl extends ServiceImpl<IWorkerDAO, Worker> implement
     public String findWorkerIdentityNumByAccount(String account){
         return baseMapper.selectIdentityNumByWorkerNum(account);
     }
+
+    @Override
+    public String findWorkerNameByAccount(String account){
+        return baseMapper.selectWorkerNameByWorkerNum(account);
+    }
+
 }

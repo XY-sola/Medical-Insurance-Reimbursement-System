@@ -28,4 +28,12 @@ public interface IWorkerService extends IService<Worker> {
      * @return 身份证号
      */
     public String findWorkerIdentityNumByAccount(String account);
+
+    /**
+     * 根据账号查找审批人员姓名并返回结果
+     *
+     * @param account 账号
+     * @return 姓名
+     */
+    public String findWorkerNameByAccount(String account);
 }

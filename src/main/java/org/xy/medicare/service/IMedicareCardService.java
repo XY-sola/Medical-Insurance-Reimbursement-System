@@ -26,4 +26,12 @@ public interface IMedicareCardService extends IService<MedicareCard> {
      * @return 身份证号
      */
     public String findMedicareCardIdentityNumByAccount(String account);
+
+    /**
+     * 根据账号查找医保人员姓名并返回结果
+     *
+     * @param account 账号
+     * @return 姓名
+     */
+    public String findMedicareNameByAccount(String account);
 }

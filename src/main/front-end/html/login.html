@@ -125,16 +125,19 @@
                         // 管理员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
+                        sessionStorage.setItem("userName", res.data.result.userName);
                         location.replace('./admin/welcome.html');
                     } else if (res.data.msgId == "A004") {
                         // 审批人员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
+                        sessionStorage.setItem("userName", res.data.result.userName);
                         location.replace('./worker/welcome.html');
                     } else if (res.data.msgId == "A005") {
                         // 普通用户登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
+                        sessionStorage.setItem("userName", res.data.result.userName);
                         location.replace('./generalUser/welcome.html');
                     }
                 }).catch(error => {
