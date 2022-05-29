@@ -1,0 +1,157 @@
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th{
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    font-size: larger;
+}
+
+table td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: large;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    min-width: 50px;
+    min-height: 20px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f0f0f0;
+    min-width: 30px;
+    min-height: 15px;
+}
+
+.pageSelectBox{
+    text-align: center;
+    vertical-align: center;
+}
+
+.pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 21px 0;
+    border-radius: 3px;
+}
+
+.pagination > li {
+    display: inline;
+}
+
+.pagination > li > select {
+    display: inline-block;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    margin-left: 2.5rem;
+}
+
+.pagination > li > a {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    line-height: 1.5;
+    text-decoration: none;
+    color: #009a61;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+    list-style: none;
+}
+
+.pagination > li > a:hover {
+    background-color: #eee;
+}
+
+.pagination .active {
+    color: #fff;
+    background-color: #009a61;
+    border-left: none;
+    border-right: none;
+}
+
+.pagination .active:hover {
+    background: #009a61;
+    cursor: default;
+}
+
+.pagination > li:first-child > a .p {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.pagination > li:last-child > a {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.addButton{
+    background-color: lightgreen;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    min-width: 30px;
+    min-height: 20px;
+    margin: 0;
+    padding: 10px 25px;
+    border-width: 0;
+    border-radius: 5px;
+}
+
+.deleteButton{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    min-width: 30px;
+    min-height: 20px;
+    margin: 0;
+    padding: 10px 25px;
+    border-width: 0;
+    border-radius: 5px;
+}
+
+.backButton{
+    background-color: royalblue;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    min-width: 30px;
+    min-height: 20px;
+    margin: 0;
+    padding: 10px 25px;
+    border-width: 0;
+    border-radius: 5px;
+}
+
+.rightFloat{
+    float: right;
+    margin: 20px 20px;
+}
+
+
+
+.blankWarnPanel{
+    display: none;
+    background-color: yellow;
+    width: 100%;
+    min-height: 200px;
+    min-width: 200px;
+    border-radius: 30px;
+    margin-top:40px;
+    padding-top: 40px;
+}
+
+.blankWarnPanel h1{
+    color: red;
+    text-align: center;
+}

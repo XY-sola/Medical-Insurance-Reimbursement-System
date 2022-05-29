@@ -182,7 +182,6 @@
                 if (this.errorFlg.accountFlg || this.errorFlg.passwordFlg || this.errorFlg.passwordRepeatFlg || this.errorFlg.userRoleFlg) {
                     return;
                 }
-                var self = this;
                 axios.post("http://localhost:8000/medicare/api/register", {
                     "account": this.param.account,
                     "password": this.param.password,
@@ -191,40 +190,40 @@
                 }).then(res => {
                     console.log(res.data);
                     if (res.data.msgId == "A006") {
-                        self.errorFlg.registerFlag = true;
-                        self.errorMsg.registerMsg = message.A006;
+                        this.errorFlg.registerFlag = true;
+                        this.errorMsg.registerMsg = message.A006;
                         alert('账号已注册');
-                        self.blank(1);
-                        self.blank(2);
-                        self.blank(3);
+                        this.blank(1);
+                        this.blank(2);
+                        this.blank(3);
                     } else if (res.data.msgId == "A007") {
-                        self.errorFlg.registerFlag = true;
-                        self.errorMsg.registerMsg = message.A007;
+                        this.errorFlg.registerFlag = true;
+                        this.errorMsg.registerMsg = message.A007;
                         alert('密码不一致');
-                        self.blank(2);
-                        self.blank(3);
+                        this.blank(2);
+                        this.blank(3);
                     } else if (res.data.msgId == "A008") {
-                        self.errorFlg.registerFlag = true;
-                        self.errorMsg.registerMsg = message.A008;
+                        this.errorFlg.registerFlag = true;
+                        this.errorMsg.registerMsg = message.A008;
                         alert('无此医保人员');
-                        self.blank(1);
-                        self.blank(2);
-                        self.blank(3);
+                        this.blank(1);
+                        this.blank(2);
+                        this.blank(3);
                     } else if (res.data.msgId == "A009") {
-                        self.errorFlg.registerFlag = true;
-                        self.errorMsg.registerMsg = message.A009;
+                        this.errorFlg.registerFlag = true;
+                        this.errorMsg.registerMsg = message.A009;
                         alert('无此审批人员');
-                        self.blank(1);
-                        self.blank(2);
-                        self.blank(3);
+                        this.blank(1);
+                        this.blank(2);
+                        this.blank(3);
                     } else if (res.data.msgId == "A011") {
-                        self.errorFlg.registerFlag = true;
-                        self.errorMsg.registerMsg = message.A011;
+                        this.errorFlg.registerFlag = true;
+                        this.errorMsg.registerMsg = message.A011;
                         alert('注册失败');
-                        self.blank(1);
-                        self.blank(2);
-                        self.blank(3);
-                    }else if (res.data.msgId == "A010") {
+                        this.blank(1);
+                        this.blank(2);
+                        this.blank(3);
+                    } else if (res.data.msgId == "A010") {
                         // 注册成功
                         alert('注册成功');
                         location.replace('./login.html');

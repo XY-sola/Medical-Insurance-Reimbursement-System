@@ -44,12 +44,13 @@ public class LoginCtl {
      * @return 登陆结果信息
      */
     @PostMapping("/login")
-    public ResponseResult<Map<String, String>> login(@RequestBody @Valid LoginForm form) {
-        Map<String, String> map = ser.userLogin(form.getAccount(), form.getPassword());
+    public ResponseResult<Map<String, String>> loginCtl(@RequestBody @Valid LoginForm form) {
+        Map<String, String> map = ser.userLoginSer(form.getAccount(), form.getPassword());
         if ("1".equals(map.get("res"))) {
             String token = jwtUtil.createToken(map.get("account"));
             Map<String, String> res = new HashMap<>();
             res.put("authToken", token);
+            res.put("account",map.get("account"));
             res.put("userRole", map.get("user_role"));
             if ("0".equals(map.get("user_role"))) {
                 //0 管理员
@@ -57,11 +58,11 @@ public class LoginCtl {
                 return ResponseResult.getMessageResult(res, "A003", StatusCode.C200);
             } else if ("1".equals(map.get("user_role"))) {
                 //1 审批人员
-                res.put("userName", ser3.findWorkerNameByAccount(form.getAccount()));
+                res.put("userName", ser3.findWorkerNameByAccountSer(form.getAccount()));
                 return ResponseResult.getMessageResult(res, "A004", StatusCode.C200);
             } else {
                 //2 普通用户
-                res.put("userName", ser2.findMedicareNameByAccount(form.getAccount()));
+                res.put("userName", ser2.findMedicareNameByAccountSer(form.getAccount()));
                 return ResponseResult.getMessageResult(res, "A005", StatusCode.C200);
             }
         } else if ("-1".equals(map.get("res"))) {

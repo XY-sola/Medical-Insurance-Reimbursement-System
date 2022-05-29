@@ -1,0 +1,132 @@
+/* 必须是容器背景色透明，而不是容器透明。否则容器内的元素也会透明
+            因此，通过声明背景色透明度实现背景的透明*/
+/* 按窗口尺寸，绝对定位，从而实现模态框的覆盖 */
+.popWindow {
+    min-width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+  /*  background: rgba(0, 0, 0, 0.2); 当弹窗大小超过当前页面时，蒙版盖不住*/
+    display: none;
+}
+
+/* 模态框容器中的对话框，实际显示操作的部分。显式声明宽度，基于margin自动居中 */
+.popWindow .popDialog {
+    position: absolute;
+    top:5%;
+    left:10%;
+    min-width: 400px;
+    width:74%;
+    margin: auto;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.popWindow .popDialog h1{
+    text-align: center;
+}
+
+.four{
+    padding: 0 30px 20px 30px;
+}
+
+.popBlankWarnPanel{
+    display: none;
+    background-color: yellow;
+    width: 100%;
+    min-height: 200px;
+    min-width: 200px;
+    border-radius: 30px;
+    margin-top:40px;
+    padding-top: 40px;
+}
+
+.popBlankWarnPanel h1{
+    color: red;
+    text-align: center;
+}
+
+.itemBody{
+    min-width: 300px;
+    min-height: 30px;
+    width:98%;
+    background-color: lightskyblue;
+    border-radius: 10px;
+    padding: 20px 0;
+}
+.itemInput{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.itemInput h2{
+    margin: 10px 2% 10px 6%;
+}
+
+.itemInput input{
+    margin: 10px 1%;
+    min-height: 40px;
+    min-width: 50%;
+}
+
+.itemInput select{
+    margin: 10px 1%;
+    min-height: 40px;
+    min-width: 50%;
+}
+
+.itemInput .msgSpan{
+    color: red;
+    margin:10px 3%;
+}
+
+.itemButton{
+    width: 100%;
+    padding: 20px 0 0 0;
+    text-align: center;
+}
+
+
+
+
+
+.popWindow2{
+    min-width: 100vw;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
+}
+.popWindow2 .popDialog2 {
+    position: fixed;
+    top: 30%;
+    left:30%;
+    min-width: 400px;
+    width: 40%;
+    min-height: 300px;
+    margin: auto;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.popWindow2 .popDialog2 .content{
+    width: 100%;
+    height: 70%;
+    text-align: center;
+    padding-top:50px;
+}
+
+.popWindow2 .popDialog2 .content h1{
+    color: red;
+}
+
+.popWindow2 .popDialog2 .footerButton{
+    width: 100%;
+    height: 20%;
+    text-align: center;
+    padding-top: 20px;
+}

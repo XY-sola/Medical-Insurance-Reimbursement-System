@@ -39,15 +39,15 @@ public class RetrievePasswordCtl {
      * @return 验证结果信息
      */
     @PostMapping("/retrievePasswordVerify")
-    public ResponseResult<Map<String, String>> retrievePasswordVerify(@RequestBody @Valid RetrievePasswordVerifyForm form) {
-        int userQuantity = ser1.countUserByAccount(form.getAccount());
+    public ResponseResult<Map<String, String>> retrievePasswordVerifyCtl(@RequestBody @Valid RetrievePasswordVerifyForm form) {
+        int userQuantity = ser1.countUserByAccountSer(form.getAccount());
         if (userQuantity == 0) {
             return ResponseResult.getMessageResult(null, "A001");
         }
-        int userRole = ser1.findUserRoleByAccount(form.getAccount());
+        int userRole = ser1.findUserRoleByAccountSer(form.getAccount());
         if (userRole == 2) {
             //验证医保人员的身份证号
-            String IdentityNum = ser2.findMedicareCardIdentityNumByAccount(form.getAccount());
+            String IdentityNum = ser2.findMedicareCardIdentityNumByAccountSer(form.getAccount());
             if (form.getIdentityCardNum().equals(IdentityNum)) {
                 return ResponseResult.getMessageResult(null, "A012");
             } else {
@@ -55,7 +55,7 @@ public class RetrievePasswordCtl {
             }
         } else {
             //验证审批人员的身份证号
-            String IdentityNum = ser3.findWorkerIdentityNumByAccount(form.getAccount());
+            String IdentityNum = ser3.findWorkerIdentityNumByAccountSer(form.getAccount());
             if (form.getIdentityCardNum().equals(IdentityNum)) {
                 return ResponseResult.getMessageResult(null, "A012");
             } else {
@@ -71,12 +71,12 @@ public class RetrievePasswordCtl {
      * @return 修改结果信息
      */
     @PostMapping("/retrievePasswordModify")
-    public ResponseResult<Map<String, String>> retrievePasswordModify(@RequestBody @Valid RetrievePasswordModifyForm form) {
+    public ResponseResult<Map<String, String>> retrievePasswordModifyCtl(@RequestBody @Valid RetrievePasswordModifyForm form) {
         if(!form.getPassword().equals(form.getPasswordRepeat())){
             //密码不一致
             return ResponseResult.getMessageResult(null, "A007");
         }
-        boolean res = ser1.modifyPassword(form.getAccount(),form.getPassword());
+        boolean res = ser1.modifyPasswordSer(form.getAccount(),form.getPassword());
         if(res){
             return ResponseResult.getMessageResult(null, "A014");
         }else{

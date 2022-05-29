@@ -7,35 +7,39 @@
 </head>
 <body>
 <div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/003.jpg" alt="头像">
-                </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
-            </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./personalInformation.html">个人信息维护</a></li>
-                    <li><a href="./workerJobInformation.html">工作信息查询</a></li>
-                    <li><a href="./applicationCheck.html">报销审核</a></li>
-                </ul>
-            </div>
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/003.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./personalInformation.html">个人信息维护</a></li>
+                        <li><a href="./workerJobInformation.html">工作信息查询</a></li>
+                        <li><a href="./applicationCheck.html">报销审核</a></li>
+                        <li><a href="./applicationCheck.html">报销计算</a></li>
+                        <li><a href="./applicationCheck.html">报销支付</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <p>欢迎使用本系统进行医疗保险的报销。</p>
+            </div>
         </div>
     </div>
     <!-- 页脚 -->
@@ -51,9 +55,9 @@
         el: "#welcome",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
             },
             errorFlg: {
                 "accountFlg": false,
@@ -64,19 +68,19 @@
                 "loginMsg": ""
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            var userName = sessionStorage.getItem("userName");
+            this.param.userName = userName;
+            if (userRole == 0) {
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
         },
         methods: {
             logout: function () {

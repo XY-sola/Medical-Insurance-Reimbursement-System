@@ -104,40 +104,42 @@
                     alert(this.errorMsg.passwordMsg);
                     return;
                 }
-                var self = this;
                 axios.post("http://localhost:8000/medicare/api/login", {
                     "account": this.param.account,
                     "password": this.param.password
                 }).then(res => {
                     console.log(res.data);
                     if (res.data.msgId == "A001") {
-                        self.errorFlg.loginFlg = true;
-                        self.errorMsg.loginMsg = message.A001;
+                        this.errorFlg.loginFlg = true;
+                        this.errorMsg.loginMsg = message.A001;
                         alert('您输入的用户名不存在');
-                        self.blank(1);
-                        self.blank(2);
+                        this.blank(1);
+                        this.blank(2);
                     } else if (res.data.msgId == "A002") {
-                        self.errorFlg.loginFlg = true;
-                        self.errorMsg.loginMsg = message.A002;
+                        this.errorFlg.loginFlg = true;
+                        this.errorMsg.loginMsg = message.A002;
                         alert('密码错误');
-                        self.blank(2);
+                        this.blank(2);
                     } else if (res.data.msgId == "A003") {
                         // 管理员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
                         sessionStorage.setItem("userName", res.data.result.userName);
+                        sessionStorage.setItem("account", res.data.result.account);
                         location.replace('./admin/welcome.html');
                     } else if (res.data.msgId == "A004") {
                         // 审批人员登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
                         sessionStorage.setItem("userName", res.data.result.userName);
+                        sessionStorage.setItem("account", res.data.result.account);
                         location.replace('./worker/welcome.html');
                     } else if (res.data.msgId == "A005") {
                         // 普通用户登录成功
                         sessionStorage.setItem("authToken", res.data.result.authToken);
                         sessionStorage.setItem("userRole", res.data.result.userRole);
                         sessionStorage.setItem("userName", res.data.result.userName);
+                        sessionStorage.setItem("account", res.data.result.account);
                         location.replace('./generalUser/welcome.html');
                     }
                 }).catch(error => {

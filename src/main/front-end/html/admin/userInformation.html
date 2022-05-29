@@ -2,52 +2,246 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin welcome</title>
+    <title>User Information Management</title>
     <link rel="stylesheet" type="text/css" href="../../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tableDesign.css">
+    <link rel="stylesheet" type="text/css" href="../../css/popUpWindow.css">
 </head>
 <body>
-<div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/001.jpg" alt="头像">
-                </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
-            </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./userInformation.html">用户信息维护</a></li>
-                    <li><a href="./medicareCardInformation.html">医保人员信息维护</a></li>
-                    <li><a href="./workerInformation.html">审批人员信息维护</a></li>
-                    <li><a href="./medicineInformation.html">药品信息维护</a></li>
-                    <li><a href="./treatmentProjectInformation.html">诊疗项目信息维护</a></li>
-                    <li><a href="./serviceFacilityInformation.html">服务设施信息维护</a></li>
-                    <li><a href="./institutionInformation.html">定点机构信息维护</a></li>
-                    <li><a href="./strategyInformation.html">报销策略维护</a></li>
-                    <li><a href="./systemBankAccoutInformation.html">报销账户维护</a></li>
-                    <li><a href="./recordingInformation.html">报销记录维护</a></li>
-                </ul>
-            </div>
+<div class="all" id="userInformationManagement">
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/001.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.account}}</li>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./userInformation.html"
+                               style="background-color: blueviolet;color: white;
+                                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">用户信息维护</a>
+                        </li>
+                        <li><a href="./medicareCardInformation.html">医保人员信息维护</a></li>
+                        <li><a href="./workerInformation.html">审批人员信息维护</a></li>
+                        <li><a href="./medicineInformation.html">药品信息维护</a></li>
+                        <li><a href="./treatmentProjectInformation.html">诊疗项目信息维护</a></li>
+                        <li><a href="./serviceFacilityInformation.html">服务设施信息维护</a></li>
+                        <li><a href="./institutionInformation.html">定点机构信息维护</a></li>
+                        <li><a href="./strategyInformation.html">报销策略维护</a></li>
+                        <li><a href="./systemBankAccoutInformation.html">报销账户维护</a></li>
+                        <li><a href="./recordingInformation.html">报销记录维护</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <div>
+                    <button class="addButton rightFloat"
+                            type="button"
+                            @click="applyAddWorkerUser()">添加审批人员用户
+                    </button>
+                    <button class="addButton rightFloat"
+                            type="button"
+                            @click="applyAddMedicareUser()">添加医保人员用户
+                    </button>
+                </div>
+                <br>
+                <div ref="userTableRef">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>账号</th>
+                            <th>用户角色</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in result.list">
+                            <td>{{(pageInfo.currentPage-1)*pageInfo.onePageCount+index+1}}</td>
+                            <td>{{item.account}}</td>
+                            <td>{{item.user_role}}</td>
+                            <td>
+                                <button class="deleteButton"
+                                        type="button"
+                                        @click="deleteUser(item.account,item.user_role)">删除
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="pageSelectBox">
+                        <ul class="pagination" style="margin: auto;">
+                            <li v-for="n in result.pages">
+                                <a href="javascript:void(0);"
+                                   @click="search(n)"
+                                   :class="{'active' : n==result.pageNum}">{{n}}</a>
+                            </li>
+                            <li>
+                                <select @change="search(1)"
+                                        v-model="pageInfo.onePageCount">
+                                    <option v-for="item in pageCountList"
+                                            :value="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <div class="blankWarnPanel" ref="blankWarnRef">
+                        <h1>系统用户为空</h1>
+                        <h1>请添加用户</h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 页脚 -->
     <div class="area footer">
         <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+    </div>
+    <!-- 添加医保人员用户的弹窗 -->
+    <div class="popWindow"
+         ref="popWindowAddMedicare">
+        <div class="popDialog four"
+             style=" ">
+            <h1>添加医保人员用户</h1>
+            <div ref="medicareTableRef">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>医保号</th>
+                        <th>身份证号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item,index) in medicareResult.list">
+                        <td>{{(medicarePageInfo.currentPage-1)*medicarePageInfo.onePageCount+index+1}}</td>
+                        <td>{{item.medicare_card_num}}</td>
+                        <td>{{item.identity_card_num}}</td>
+                        <td>{{item.medicare_name}}</td>
+                        <td>{{item.medicare_sex}}</td>
+                        <td>{{item.medicare_age}}</td>
+                        <td>
+                            <button class="addButton"
+                                    type="button"
+                                    @click="addMedicareUser(item.medicare_card_num,item.medicare_name)">添加
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="pageSelectBox">
+                    <ul class="pagination" style="margin: auto;">
+                        <li v-for="n in medicareResult.pages">
+                            <a href="javascript:void(0);"
+                               @click="searchMedicare(n)"
+                               :class="{'active' : n==medicareResult.pageNum}">{{n}}</a>
+                        </li>
+                        <li>
+                            <select @change="searchMedicare(1)"
+                                    v-model="medicarePageInfo.onePageCount">
+                                <option v-for="item in pageCountList"
+                                        :value="item">{{item}}
+                                </option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="popBlankWarnPanel" ref="medicareBlankWarnRef">
+                <h1>无可添加的医保人员</h1>
+            </div>
+            <button class="backButton rightFloat"
+                    @click="backPage()"
+                    style="margin-right: 80px">返回
+            </button>
+        </div>
+    </div>
+    <!-- 添加审批人员用户的弹窗 -->
+    <div class="popWindow"
+         ref="popWindowAddWorker">
+        <div class="popDialog four"
+             style=" ">
+            <h1>添加审批人员用户</h1>
+            <div ref="workerTableRef">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>工号</th>
+                        <th>身份证号</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>工作单位</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item,index) in workerResult.list">
+                        <td>{{(workerPageInfo.currentPage-1)*workerPageInfo.onePageCount+index+1}}</td>
+                        <td>{{item.worker_num}}</td>
+                        <td>{{item.worker_identity_num}}</td>
+                        <td>{{item.worker_name}}</td>
+                        <td>{{item.worker_sex}}</td>
+                        <td>{{item.worker_organization}}</td>
+                        <td>
+                            <button class="addButton"
+                                    type="button"
+                                    @click="addWorkerUser(item.worker_num,item.worker_name)">添加
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="pageSelectBox">
+                    <ul class="pagination" style="margin: auto;">
+                        <li v-for="n in workerResult.pages">
+                            <a href="javascript:void(0);"
+                               @click="searchWorker(n)"
+                               :class="{'active' : n==workerResult.pageNum}">{{n}}</a>
+                        </li>
+                        <li>
+                            <select @change="searchWorker(1)"
+                                    v-model="workerPageInfo.onePageCount">
+                                <option v-for="item in pageCountList"
+                                        :value="item">{{item}}
+                                </option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="popBlankWarnPanel" ref="workerBlankWarnRef">
+                <h1>无可添加的审批人员</h1>
+            </div>
+            <button class="backButton rightFloat"
+                    @click="backPage()"
+                    style="margin-right: 80px">返回
+            </button>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="../../js/axios.js"></script>
@@ -55,37 +249,215 @@
 <script type="text/javascript" src="../../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#welcome",
+        el: "#userInformationManagement",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
+                "account": "",
             },
-            errorFlg: {
-                "accountFlg": false,
-                "loginFlag": false
+            result: {
+                "list": {}
             },
-            errorMsg: {
-                "accountMsg": "",
-                "loginMsg": ""
+            pageInfo: {
+                "currentPage": 1,
+                "onePageCount": 5,//一页有多少行数据
+            },
+            medicareResult: {
+                "list": {}
+            },
+            medicarePageInfo: {
+                "currentPage": 1,
+                "onePageCount": 5,//一页有多少行数据
+            },
+            workerResult: {
+                "list": {}
+            },
+            workerPageInfo: {
+                "currentPage": 1,
+                "onePageCount": 5,//一页有多少行数据
+            },
+            pageCountList: [5, 10, 20, 30, 50],//一页可以有多少行
+            error: {
+                "errorFlg": false,
+                "errorMsg": "",
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        created: function () {
+            // 数据初始化完成
+            this.search(1);
+        },
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            this.param.userName = sessionStorage.getItem("userName");
+            this.param.account = sessionStorage.getItem("account");
+            if (userRole == 0) {
+                this.param.userName = "";
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
         },
         methods: {
+            search: function (currentPage) {
+                this.error.errorMsg = "";
+                this.pageInfo.currentPage = currentPage;
+                axios.post("http://localhost:8000/medicare/api/searchUserList",
+                    {
+                        "pageNum": this.pageInfo.currentPage,
+                        "pageSize": this.pageInfo.onePageCount
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.userTableRef.style.display = "none";
+                            this.$refs.blankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.userTableRef.style.display = "inline";
+                            this.$refs.blankWarnRef.style.display = "none";
+                            this.result = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
+            searchMedicare: function (currentPage) {
+                this.error.errorMsg = "";
+                this.medicarePageInfo.currentPage = currentPage;
+                axios.post("http://localhost:8000/medicare/api/searchNotRegisterMedicareList",
+                    {
+                        "pageNum": this.medicarePageInfo.currentPage,
+                        "pageSize": this.medicarePageInfo.onePageCount
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.medicareTableRef.style.display = "none";
+                            this.$refs.medicareBlankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.medicareTableRef.style.display = "inline";
+                            this.$refs.medicareBlankWarnRef.style.display = "none";
+                            this.medicareResult = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
+            searchWorker: function (currentPage) {
+                this.error.errorMsg = "";
+                this.workerPageInfo.currentPage = currentPage;
+                axios.post("http://localhost:8000/medicare/api/searchNotRegisterWorkerList",
+                    {
+                        "pageNum": this.workerPageInfo.currentPage,
+                        "pageSize": this.workerPageInfo.onePageCount
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.workerTableRef.style.display = "none";
+                            this.$refs.workerBlankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.workerTableRef.style.display = "inline";
+                            this.$refs.workerBlankWarnRef.style.display = "none";
+                            this.workerResult = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
+            applyAddMedicareUser: function () {
+                this.$refs.popWindowAddMedicare.style.display = "block";
+                this.searchMedicare(1);
+            },
+            applyAddWorkerUser: function () {
+                this.$refs.popWindowAddWorker.style.display = "block";
+                this.searchWorker(1);
+            },
+            deleteUser: function (account, role) {
+                if (confirm("是否删除“" + account + "”" + role + "?")) {
+                    this.error.errorMsg = "";
+                    if (role == "医保人员") {
+                        role = 2;
+                    } else if (role == "审批人员") {
+                        role = 1;
+                    }
+                    axios.post("http://localhost:8000/medicare/api/deleteUser", {
+                        "account": account,
+                        "userRole": role
+                    }).then(res => {
+                        if (res.data.msgId == "A023") {
+                            this.error.errorMsg = message.A023;
+                            alert('删除“' + account + '”失败');
+                        } else if (res.data.msgId == "A022") {
+                            // 注册成功
+                            alert('删除“' + account + '”成功');
+                            this.search(1);
+                        }
+                    }).catch(error => {
+                        location.href = "./500.html";
+                    });
+                }
+            },
+            addMedicareUser: function (num, name) {
+                if (confirm("是否将“" + name + "”添加为用户？\n" + "密码默认为“12345678”")) {
+                    this.error.errorMsg = "";
+                    axios.post("http://localhost:8000/medicare/api/register", {
+                        "account": num,
+                        "password": "12345678",
+                        "passwordRepeat": "12345678",
+                        "userRole": 2
+                    }).then(res => {
+                        if (res.data.msgId == "A011") {
+                            this.error.errorMsg = message.A011;
+                            alert('添加“' + name + '”失败');
+                        } else if (res.data.msgId == "A010") {
+                            // 注册成功
+                            alert('添加“' + name + '”成功');
+                            this.searchMedicare(1);
+                        }
+                    }).catch(error => {
+                        location.href = "./500.html";
+                    });
+                }
+            },
+            addWorkerUser: function (num, name) {
+                if (confirm("是否将“" + name + "”添加为用户？\n" + "密码默认为“12345678”")) {
+                    this.error.errorMsg = "";
+                    axios.post("http://localhost:8000/medicare/api/register", {
+                        "account": num,
+                        "password": "12345678",
+                        "passwordRepeat": "12345678",
+                        "userRole": 1
+                    }).then(res => {
+                        if (res.data.msgId == "A011") {
+                            this.error.errorMsg = message.A011;
+                            alert('添加“' + name + '”失败');
+                        } else if (res.data.msgId == "A010") {
+                            // 注册成功
+                            alert('添加“' + name + '”成功');
+                            this.searchWorker(1);
+                        }
+                    }).catch(error => {
+                        location.href = "./500.html";
+                    });
+                }
+            },
+            backPage: function () {
+                this.$refs.popWindowAddMedicare.style.display = "none";
+                this.$refs.popWindowAddWorker.style.display = "none";
+                this.search(this.pageInfo.currentPage);
+            },
             logout: function () {
                 if (confirm("是否退出登录？")) {
                     sessionStorage.clear();
