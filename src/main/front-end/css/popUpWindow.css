@@ -71,6 +71,12 @@
     min-width: 50%;
 }
 
+.itemInput .messageContent{
+    margin: 10px 1%;
+    min-height: 40px;
+    min-width: 50%;
+}
+
 .itemInput select{
     margin: 10px 1%;
     min-height: 40px;

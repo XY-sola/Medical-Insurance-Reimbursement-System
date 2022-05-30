@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
-import org.xy.medicare.form.AddMedicareCardForm;
 import org.xy.medicare.form.AddWorkerForm;
 import org.xy.medicare.form.IDForm;
 import org.xy.medicare.form.SearchListByPageNumAndPageSizeForm;
@@ -52,6 +51,22 @@ public class WorkerCtl {
     }
 
     /**
+     * 获取单个审批人员信息
+     *
+     * @param form 包含账号
+     * @return JSON in response
+     */
+    @PostMapping("/searchTheWorker")
+    public ResponseResult<Map<String, Object>> searchTheWorkerCtl(@RequestBody @Valid IDForm form) {
+        if (ser1.countWorkerByAccountSer(form.getId()) == 0) {
+            //无此审批人员，查询失败
+            return ResponseResult.getMessageResult(null, "A033");
+        }
+        Map<String, Object> map = ser1.findTheWorkerByWorkerNumSer(form.getId());
+        return ResponseResult.getMessageResult(map, "A032", StatusCode.C200);
+    }
+
+    /**
      * 获取全部审批人员信息分页列表
      *
      * @param form 包含页码和单页条数
@@ -70,12 +85,13 @@ public class WorkerCtl {
 
     /**
      * 根据工号删除审批人员
+     *
      * @param form 包含工号
      * @return JSON in response
      */
     @PostMapping("/deleteWorker")
     public ResponseResult<Boolean> deleteWorkerCtl(@RequestBody @Valid IDForm form) {
-        if(ser2.countApplicationByWorkerNumSer(form.getId())==0){
+        if (ser2.countApplicationByWorkerNumSer(form.getId()) == 0) {
             //严谨的应该判断有无账户再进行账户删除，这里直接全部删除，因此判断用 或
             boolean res1 = ser4.deletePersonByAccountSer(form.getId());
             boolean res2 = ser3.deleteUserByAccountSer(form.getId());
@@ -85,26 +101,28 @@ public class WorkerCtl {
             } else {
                 return ResponseResult.getMessageResult(false, "A035");
             }
-        }else{
+        } else {
             return ResponseResult.getMessageResult(false, "A036");
         }
     }
 
     /**
      * 根据信息添加审批人员信息
+     *
      * @param form
      * @return
      */
     @PostMapping("/addWorker")
     public ResponseResult<Boolean> addWorkerByInformationCtl(@RequestBody @Valid AddWorkerForm form) {
-        if(ser1.countWorkerByAccountSer(form.getWorkerNum())==0){
-            boolean res = ser1.addWorkerByInformationSer(form.getWorkerNum(),form.getWorkerName(),form.getIdentityNum(),form.getWorkerSex(),form.getWorkerOrganization(),form.getWorkerAddress());
-            if(res){
+        if (ser1.countWorkerByAccountSer(form.getWorkerNum()) == 0
+                && ser1.countWorkerByIdentityNumSer(form.getIdentityNum()) == 0) {
+            boolean res = ser1.addWorkerByInformationSer(form.getWorkerNum(), form.getWorkerName(), form.getIdentityNum(), form.getWorkerSex(), form.getWorkerOrganization(), form.getWorkerAddress());
+            if (res) {
                 return ResponseResult.getSuccessResult(true, "A037", null);
-            }else{
+            } else {
                 return ResponseResult.getMessageResult(false, "A038");
             }
-        }else{
+        } else {
             return ResponseResult.getMessageResult(false, "A039");
         }
     }

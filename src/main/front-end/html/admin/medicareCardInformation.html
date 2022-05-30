@@ -121,7 +121,10 @@
     </div>
     <!-- 页脚 -->
     <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+        <div class="footerBlockLeft"></div>
+        <p>某报销机构</p>
+        <div class="footerBlockCenter"></div>
+        <p>{{param.systemDate}}</p>
     </div>
     <!-- 添加医保人员用户的弹窗 -->
     <div class="popWindow"
@@ -131,7 +134,7 @@
             <h1>添加医保人员</h1>
             <div class="itemBody">
                 <div class="itemInput">
-                    <h2>医保号：&nbsp&nbsp&nbsp</h2>
+                    <h2>医保号：&emsp;</h2>
                     <input type="text"
                            v-model="oneMedicareCard.medicareNum"
                            @blur="check(1)"
@@ -174,7 +177,7 @@
                           v-if="oneMedicareCardFlg.statusFlg">{{oneMedicareCardMsg.statusMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>姓名：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>姓&emsp;&emsp;名：</h2>
                     <input type="text"
                            v-model="oneMedicareCard.name"
                            @blur="check(5)"
@@ -183,7 +186,7 @@
                           v-if="oneMedicareCardFlg.nameFlg">{{oneMedicareCardMsg.nameMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>性别：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>性&emsp;&emsp;别：</h2>
                     <select v-model="oneMedicareCard.sex"
                             @blur="check(6)"
                             @focus="clear(6)">
@@ -195,7 +198,7 @@
                           v-if="oneMedicareCardFlg.sexFlg">{{oneMedicareCardMsg.sexMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>年龄：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>年&emsp;&emsp;龄：</h2>
                     <input type="text"
                            v-model="oneMedicareCard.age"
                            @blur="check(7)"
@@ -204,7 +207,7 @@
                           v-if="oneMedicareCardFlg.ageFlg">{{oneMedicareCardMsg.ageMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>民族：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>民&emsp;&emsp;族：</h2>
                     <input type="text"
                            v-model="oneMedicareCard.nation"
                            @blur="check(8)"

@@ -9,6 +9,7 @@ import org.xy.medicare.entity.MedicareCard;
 import org.xy.medicare.service.IMedicareCardService;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,17 @@ public class MedicareCardServiceImpl extends ServiceImpl<IMedicareCardDAO, Medic
     }
 
     /**
+     * 根据身份证号查找医保人员数量并返回结果
+     *
+     * @param identityNum 身份证号
+     * @return 此人员的个数
+     */
+    @Override
+    public int countMedicareCardByIdentityNumSer(String identityNum) {
+        return query().eq("identity_card_num", identityNum).count();
+    }
+
+    /**
      * 根据账号查找医保人员身份证号并返回结果
      *
      * @param account 账号
@@ -41,6 +53,10 @@ public class MedicareCardServiceImpl extends ServiceImpl<IMedicareCardDAO, Medic
      */
     @Override
     public String findMedicareCardIdentityNumByAccountSer(String account) {
+        Map<String, Object> map = new HashMap<>();
+        map = baseMapper.findTheMedicareCardByMedicareCardNumDAO(account);
+        System.out.println("顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶" + map);
+
         return baseMapper.selectIdentityCardNumByMedicareCardNum(account);
     }
 
@@ -78,6 +94,35 @@ public class MedicareCardServiceImpl extends ServiceImpl<IMedicareCardDAO, Medic
         }
         PageInfo<Map<String, Object>> pageInfo = new PageInfo(list);
         return pageInfo;
+    }
+
+    /**
+     * 查询单个医保人员
+     *
+     * @return 医保人员信息
+     */
+    @Override
+    public Map<String, Object> findTheMedicareCardByWorkerMedicareCardNumSer(String medicareCardNum) {
+        Map<String, Object> map = baseMapper.findTheMedicareCardByMedicareCardNumDAO(medicareCardNum);
+        //将数字转为文字
+        if (map.get("medicare_type").equals(1)) {
+            map.put("medicare_type", "城镇职工医保");
+        } else if (map.get("medicare_type").equals(2)) {
+            map.put("medicare_type", "城镇居民医保");
+        } else if (map.get("medicare_type").equals(3)) {
+            map.put("medicare_type", "新农合医保");
+        }
+        if (map.get("medicare_status").equals(0)) {
+            map.put("medicare_status", "未缴费");
+        } else if (map.get("medicare_status").equals(1)) {
+            map.put("medicare_status", "已缴费");
+        }
+        if (map.get("medicare_sex").equals(0)) {
+            map.put("medicare_sex", "男");
+        } else if (map.get("medicare_sex").equals(1)) {
+            map.put("medicare_sex", "女");
+        }
+        return map;
     }
 
     /**

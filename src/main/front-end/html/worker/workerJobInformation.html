@@ -2,83 +2,165 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Worker Welcome</title>
+    <title>Worker Information Search</title>
     <link rel="stylesheet" type="text/css" href="../../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tableDesign.css">
+    <link rel="stylesheet" type="text/css" href="../../css/popUpWindow.css">
 </head>
 <body>
-<div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/003.jpg" alt="头像">
+<div class="all" id="workerInformationSearch">
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
+        </div>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/003.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.account}}</li>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
                 </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./personalInformation.html">个人信息维护</a></li>
+                        <li><a href="./workerJobInformation.html"
+                               style="background-color: blueviolet;color: white;
+                               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">工作信息查询</a>
+                        </li>
+                        <li><a href="./applicationCheck.html">待审核申请</a></li>
+                        <li><a href="./applicationCalculation.html">待计算申请</a></li>
+                        <li><a href="./applicationCalculation.html">待支付申请</a></li>
+                        <li><a href="./recordingInformation.html">审批申请记录</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./personalInformation.html">个人信息维护</a></li>
-                    <li><a href="./workerJobInformation.html">工作信息查询</a></li>
-                    <li><a href="./applicationCheck.html">报销审核</a></li>
-                </ul>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <br>
+                <div ref="mainBlockRef"
+                     class="squarePanel">
+                    <h1>用户工作信息</h1>
+                    <div class="panelBody" style="background-color: #dddddd">
+                        <div class="hang">
+                            <h2>工&emsp;&emsp;号：</h2>
+                            <div class="messageContent">{{result.worker_num}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>身份证号：</h2>
+                            <div class="messageContent">{{result.worker_identity_num}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>姓&emsp;&emsp;名：</h2>
+                            <div class="messageContent">{{result.worker_name}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>性&emsp;&emsp;别：</h2>
+                            <div class="messageContent">{{result.worker_sex}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>工作单位：</h2>
+                            <div class="messageContent">{{result.worker_organization}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>工作地点：</h2>
+                            <div class="messageContent">{{result.worker_address}}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="blankWarnPanel" ref="blankWarnRef">
+                <h1>个人信息为空</h1>
             </div>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
-        </div>
     </div>
-    <!-- 页脚 -->
-    <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
-    </div>
+</div>
+<!-- 页脚 -->
+<div class="area footer">
+    <div class="footerBlockLeft"></div>
+    <p>某报销机构</p>
+    <div class="footerBlockCenter"></div>
+    <p>{{param.systemDate}}</p>
+</div>
 </div>
 <script type="text/javascript" src="../../js/axios.js"></script>
 <script type="text/javascript" src="../../js/vue.js"></script>
 <script type="text/javascript" src="../../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#welcome",
+        el: "#workerInformationSearch",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
+                "account": "",
             },
-            errorFlg: {
-                "accountFlg": false,
-                "loginFlag": false
+            result: {
+                "worker_num": "",
+                "worker_name": "",
+                "worker_identity_num": "",
+                "worker_sex": "",
+                "worker_organization": "",
+                "worker_address": ""
             },
-            errorMsg: {
-                "accountMsg": "",
-                "loginMsg": ""
+            error: {
+                "errorFlg": false,
+                "errorMsg": "",
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        created: function () {
+            // 数据初始化完成
+
+        },
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            this.param.userName = sessionStorage.getItem("userName");
+            this.param.account = sessionStorage.getItem("account");
+            if (userRole == 0) {
+                this.param.userName = "";
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
+            this.search(this.param.account);
         },
         methods: {
+            search: function (account) {
+                this.error.errorMsg = "";
+                axios.post("http://localhost:8000/medicare/api/searchTheWorker",
+                    {
+                        "id": account
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.mainBlockRef.style.display = "none";
+                            this.$refs.blankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.mainBlockRef.style.display = "inline";
+                            this.$refs.blankWarnRef.style.display = "none";
+                            this.result = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
             logout: function () {
                 if (confirm("是否退出登录？")) {
                     sessionStorage.clear();

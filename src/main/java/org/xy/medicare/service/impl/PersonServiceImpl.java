@@ -25,7 +25,7 @@ public class PersonServiceImpl extends ServiceImpl<IPersonDAO, Person> implement
      * @return 包含用户信息的Map
      */
     @Override
-    public Map<String, String> newNullPersonSer(String account){
+    public Map<String, String> newNullPersonSer(String account) {
         Map<String, String> map = new HashMap<>();
         int res = query().eq("account", account).count();
         if (res >= 1) {
@@ -45,11 +45,44 @@ public class PersonServiceImpl extends ServiceImpl<IPersonDAO, Person> implement
 
     /**
      * 根据账号删除用户个人信息
+     *
      * @param account 账号
      * @return 修改结果
      */
     @Override
-    public boolean deletePersonByAccountSer(String account){
+    public boolean deletePersonByAccountSer(String account) {
         return baseMapper.deletePersonByAccountDAO(account);
     }
+
+    /**
+     * 根据账号查找个人信息数量并返回结果
+     *
+     * @param account 账号
+     * @return 此人员的个数
+     */
+    @Override
+    public int countPersonByAccountSer(String account){
+        return query().eq("account", account).count();
+    }
+
+    /**
+     * 查询单个用户个人信息
+     *
+     * @return 用户个人信息
+     */
+    @Override
+    public Map<String, Object> findThePersonByAccountSer(String account) {
+        return baseMapper.findThePersonByAccountDAO(account);
+    }
+
+    /**
+     * 根据账号查找并修改用户个人信息
+     *
+     * @param account 账号
+     * @return 修改结果
+     */
+    public boolean modifyPersonByAccountSer(String account, String bankAccount, String telephone, String address) {
+        return baseMapper.modifyPersonByAccountDAO(account, bankAccount, telephone, address);
+    }
+
 }

@@ -2,52 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>General User Welcome</title>
+    <title>Medicare Card Information Search</title>
     <link rel="stylesheet" type="text/css" href="../../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tableDesign.css">
+    <link rel="stylesheet" type="text/css" href="../../css/popUpWindow.css">
 </head>
 <body>
-<div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/009.jpg" alt="头像">
-                </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
-            </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./personalInformation.html">个人信息维护</a></li>
-                    <li><a href="./medicareInformation.html">医保信息查询</a></li>
-                    <li><a href="./medicarePay.html">医保缴纳</a></li>
-                    <li><a href="./medicineInformation.html">药品信息查询</a></li>
-                    <li><a href="./treatmentInformation.html">诊疗项目信息查询</a></li>
-                    <li><a href="./serviceFacilityInformation.html">服务设施信息查询</a></li>
-                    <li><a href="./institutionInformation.html">定点机构信息查询</a></li>
-                    <li><a href="./strategyInformation.html">报销策略查询</a></li>
-                    <li><a href="./applyForReimbursement.html">申请报销</a></li>
-                    <li><a href="./recordingInformation.html">报销记录查询</a></li>
-                </ul>
-            </div>
+<div class="all" id="medicareInformationSearch">
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/001.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.account}}</li>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./personalInformation.html">个人信息维护</a></li>
+                        <li><a href="./medicareInformation.html"
+                               style="background-color: blueviolet;color: white;
+                               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">医保信息查询</a>
+                        </li>
+                        <li><a href="./medicarePay.html">医保缴纳</a></li>
+                        <li><a href="./medicineInformation.html">药品信息查询</a></li>
+                        <li><a href="./treatmentInformation.html">诊疗项目信息查询</a></li>
+                        <li><a href="./serviceFacilityInformation.html">服务设施信息查询</a></li>
+                        <li><a href="./institutionInformation.html">定点机构信息查询</a></li>
+                        <li><a href="./strategyInformation.html">报销策略查询</a></li>
+                        <li><a href="./applyForReimbursement.html">申请报销</a></li>
+                        <li><a href="./recordingInformation.html">报销记录查询</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <br>
+                <div ref="mainBlockRef"
+                     class="squarePanel">
+                    <h1>用户医保信息</h1>
+                    <div class="panelBody" style="background-color: #dddddd">
+                        <div class="hang">
+                            <h2>医保卡号：</h2>
+                            <div class="messageContent">{{result.medicare_card_num}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>身份证号：</h2>
+                            <div class="messageContent">{{result.identity_card_num}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>医保类别：</h2>
+                            <div class="messageContent">{{result.medicare_type}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>医保状态：</h2>
+                            <div class="messageContent">{{result.medicare_status}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>姓&emsp;&emsp;名：</h2>
+                            <div class="messageContent">{{result.medicare_name}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>性&emsp;&emsp;别：</h2>
+                            <div class="messageContent">{{result.medicare_sex}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>年&emsp;&emsp;龄：</h2>
+                            <div class="messageContent">{{result.medicare_age}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>民&emsp;&emsp;族：</h2>
+                            <div class="messageContent">{{result.medicare_nation}}</div>
+                        </div>
+                        <div class="hang">
+                            <h2>参保时间：</h2>
+                            <div class="messageContent">{{result.insurance_time}}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="blankWarnPanel" ref="blankWarnRef">
+                    <h1>个人信息为空</h1>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 页脚 -->
     <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+        <div class="footerBlockLeft"></div>
+        <p>某报销机构</p>
+        <div class="footerBlockCenter"></div>
+        <p>{{param.systemDate}}</p>
     </div>
 </div>
 <script type="text/javascript" src="../../js/axios.js"></script>
@@ -55,37 +112,73 @@
 <script type="text/javascript" src="../../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#welcome",
+        el: "#medicareInformationSearch",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
+                "account": "",
             },
-            errorFlg: {
-                "accountFlg": false,
-                "loginFlag": false
+            result: {
+                "medicare_card_num":"",
+                "identity_card_num":"",
+                "medicare_type":"",
+                "medicare_status":"",
+                "medicare_name":"",
+                "medicare_sex":"",
+                "medicare_age":"",
+                "medicare_nation":"",
+                "insurance_time":""
             },
-            errorMsg: {
-                "accountMsg": "",
-                "loginMsg": ""
+            error: {
+                "errorFlg": false,
+                "errorMsg": "",
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        created: function () {
+            // 数据初始化完成
+
+        },
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            this.param.userName = sessionStorage.getItem("userName");
+            this.param.account = sessionStorage.getItem("account");
+            if (userRole == 0) {
+                this.param.userName = "";
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
+            this.search(this.param.account);
         },
         methods: {
+            search: function (account) {
+                this.error.errorMsg = "";
+                axios.post("http://localhost:8000/medicare/api/searchTheMedicare",
+                    {
+                        "id": account
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.mainBlockRef.style.display = "none";
+                            this.$refs.blankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.mainBlockRef.style.display = "inline";
+                            this.$refs.blankWarnRef.style.display = "none";
+                            this.result = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
             logout: function () {
                 if (confirm("是否退出登录？")) {
                     sessionStorage.clear();

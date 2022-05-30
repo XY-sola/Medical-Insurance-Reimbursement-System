@@ -24,6 +24,14 @@ public interface IWorkerService extends IService<Worker> {
     public int countWorkerByAccountSer(String account);
 
     /**
+     * 根据身份证号查找审批人员数量并返回结果
+     *
+     * @param identityNum 身份证号
+     * @return 此人员的个数
+     */
+    public int countWorkerByIdentityNumSer(String identityNum);
+
+    /**
      * 根据账号查找审批人员身份证号并返回结果
      *
      * @param account 账号
@@ -45,6 +53,13 @@ public interface IWorkerService extends IService<Worker> {
      * @return 分页结果
      */
     public PageInfo<Map<String, Object>> findNotRegisterWorkerInPagesSer(int pageNum, int pageSize);
+
+    /**
+     * 查询单个审批人员
+     *
+     * @return 审批人员信息
+     */
+    public Map<String, Object> findTheWorkerByWorkerNumSer(String workerNum);
 
     /**
      * 查询所有审批人员并分页显示

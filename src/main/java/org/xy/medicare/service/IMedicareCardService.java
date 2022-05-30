@@ -2,7 +2,6 @@ package org.xy.medicare.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.xy.medicare.entity.MedicareCard;
 
 import java.sql.Date;
@@ -23,6 +22,14 @@ public interface IMedicareCardService extends IService<MedicareCard> {
      * @return 此人员的个数
      */
     public int countMedicareCardByAccountSer(String account);
+
+    /**
+     * 根据身份证号查找医保人员数量并返回结果
+     *
+     * @param identityNum 身份证号
+     * @return 此人员的个数
+     */
+    public int countMedicareCardByIdentityNumSer(String identityNum);
 
     /**
      * 根据账号查找医保人员身份证号并返回结果
@@ -46,6 +53,13 @@ public interface IMedicareCardService extends IService<MedicareCard> {
      * @return 分页结果
      */
     public PageInfo<Map<String, Object>> findNotRegisterMedicareCardInPagesSer(int pageNum, int pageSize);
+
+    /**
+     * 查询单个医保人员
+     *
+     * @return 医保人员信息
+     */
+    public Map<String, Object> findTheMedicareCardByWorkerMedicareCardNumSer(String medicareCardNum);
 
     /**
      * 查询所有医保人员并分页显示

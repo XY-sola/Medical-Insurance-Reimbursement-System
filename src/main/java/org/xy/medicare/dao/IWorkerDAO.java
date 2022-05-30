@@ -43,6 +43,16 @@ public interface IWorkerDAO extends BaseMapper<Worker> {
     public List<Map<String, Object>> findNotRegisterWorkerCard();
 
     /**
+     * 查询单个审批人员信息
+     *
+     * @return Worker列表
+     */
+    @Select("SELECT * " +
+            "FROM worker " +
+            "WHERE worker_num = #{workerNum}; ")
+    public Map<String,Object> findTheWorkerByWorkerNumDAO(@Param("worker_num") String workerNum);
+
+    /**
      * 查询所有审批人员信息
      *
      * @return Worker列表

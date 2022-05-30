@@ -32,6 +32,17 @@ public class WorkerServiceImpl extends ServiceImpl<IWorkerDAO, Worker> implement
     }
 
     /**
+     * 根据身份证号查找审批人员数量并返回结果
+     *
+     * @param identityNum 身份证号
+     * @return 此人员的个数
+     */
+    @Override
+    public int countWorkerByIdentityNumSer(String identityNum) {
+        return query().eq("worker_identity_num", identityNum).count();
+    }
+
+    /**
      * 根据账号查找审批人员身份证号并返回结果
      *
      * @param account 账号
@@ -42,6 +53,12 @@ public class WorkerServiceImpl extends ServiceImpl<IWorkerDAO, Worker> implement
         return baseMapper.selectIdentityNumByWorkerNum(account);
     }
 
+    /**
+     * 根据账号查找审批人员姓名并返回结果
+     *
+     * @param account 账号
+     * @return 姓名
+     */
     @Override
     public String findWorkerNameByAccountSer(String account) {
         return baseMapper.selectWorkerNameByWorkerNum(account);
@@ -70,6 +87,23 @@ public class WorkerServiceImpl extends ServiceImpl<IWorkerDAO, Worker> implement
         }
         PageInfo<Map<String, Object>> pageInfo = new PageInfo(list);
         return pageInfo;
+    }
+
+    /**
+     * 查询单个审批人员
+     *
+     * @return 审批人员信息
+     */
+    @Override
+    public Map<String, Object> findTheWorkerByWorkerNumSer(String workerNum) {
+        Map<String, Object> map = baseMapper.findTheWorkerByWorkerNumDAO(workerNum);
+        //将数字转为文字
+        if (map.get("worker_sex").equals(0)) {
+            map.put("worker_sex", "男");
+        } else if (map.get("worker_sex").equals(1)) {
+            map.put("worker_sex", "女");
+        }
+        return map;
     }
 
     /**

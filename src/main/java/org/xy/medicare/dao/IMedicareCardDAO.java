@@ -53,6 +53,16 @@ public interface IMedicareCardDAO extends BaseMapper<MedicareCard> {
     public List<Map<String, Object>> findNotRegisterMedicareCard();
 
     /**
+     * 查询单个医保人员
+     *
+     * @return Medicare_Card列表
+     */
+    @Select("select * " +
+            "from medicare_card " +
+            "where medicare_card_num = #{medicareCardNum}; " )
+    public Map<String,Object> findTheMedicareCardByMedicareCardNumDAO(@Param("medicare_card_num") String medicareCardNum);
+
+    /**
      * 查询所有医保人员
      *
      * @return Medicare_Card列表

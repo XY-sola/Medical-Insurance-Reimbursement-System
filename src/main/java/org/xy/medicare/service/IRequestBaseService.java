@@ -27,4 +27,12 @@ public interface IRequestBaseService extends IService<RequestBase> {
      */
     public Integer countApplicationByWorkerNumSer(String workerNum);
 
+    /**
+     * 根据定点机构编号判断是否存在有这个机构的报销申请
+     *
+     * @param institutionNum 定点机构编号
+     * @return 在这个机构的申请的数量
+     */
+    public Integer countApplicationByInstitutionNumSer(String institutionNum);
+
 }

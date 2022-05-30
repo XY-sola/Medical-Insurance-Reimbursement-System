@@ -35,4 +35,15 @@ public class RequestBaseServiceImpl extends ServiceImpl<IRequestBaseDAO, Request
         return query().eq("rb_worker", workerNum).count();
     }
 
+    /**
+     * 根据定点机构编号判断是否存在有这个机构的报销申请
+     *
+     * @param institutionNum 定点机构编号
+     * @return 在这个机构的申请的数量
+     */
+    @Override
+    public Integer countApplicationByInstitutionNumSer(String institutionNum) {
+        return query().eq("rb_institution", institutionNum).count();
+    }
+
 }

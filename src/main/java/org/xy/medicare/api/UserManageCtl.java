@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
-import org.xy.medicare.entity.Person;
 import org.xy.medicare.form.AccountAndRoleForm;
 import org.xy.medicare.form.SearchListByPageNumAndPageSizeForm;
 import org.xy.medicare.service.impl.PersonServiceImpl;

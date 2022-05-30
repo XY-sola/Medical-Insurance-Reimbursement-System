@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.xy.medicare.common.http.ResponseResult;
 import org.xy.medicare.common.http.StatusCode;
-import org.xy.medicare.form.AccountAndRoleForm;
 import org.xy.medicare.form.AddMedicareCardForm;
 import org.xy.medicare.form.IDForm;
 import org.xy.medicare.form.SearchListByPageNumAndPageSizeForm;
@@ -15,7 +14,6 @@ import org.xy.medicare.service.impl.RequestBaseServiceImpl;
 import org.xy.medicare.service.impl.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.sql.Date;
 import java.util.Map;
 
 /**
@@ -57,6 +55,22 @@ public class MedicareCardCtl {
     }
 
     /**
+     * 获取单个医保人员信息
+     *
+     * @param form 包含账号
+     * @return JSON in response
+     */
+    @PostMapping("/searchTheMedicare")
+    public ResponseResult<Map<String, Object>> searchTheMedicareCtl(@RequestBody @Valid IDForm form) {
+        if (ser1.countMedicareCardByAccountSer(form.getId()) == 0) {
+            //无此医保人员，查询失败
+            return ResponseResult.getMessageResult(null, "A025");
+        }
+        Map<String, Object> map = ser1.findTheMedicareCardByWorkerMedicareCardNumSer(form.getId());
+        return ResponseResult.getMessageResult(map, "A024", StatusCode.C200);
+    }
+
+    /**
      * 获取全部医保人员信息分页列表
      *
      * @param form 包含页码和单页条数
@@ -74,12 +88,13 @@ public class MedicareCardCtl {
 
     /**
      * 根据医保号删除医保人员
+     *
      * @param form 包含医保号
      * @return JSON in response
      */
     @PostMapping("/deleteMedicareCard")
     public ResponseResult<Boolean> deleteMedicareCardCtl(@RequestBody @Valid IDForm form) {
-        if(ser2.countApplicationByMedicareCardIdSer(form.getId())==0){
+        if (ser2.countApplicationByMedicareCardIdSer(form.getId()) == 0) {
             //严谨的应该判断有无账户再进行账户删除，这里直接全部删除，因此判断用 或
             boolean res1 = ser4.deletePersonByAccountSer(form.getId());
             boolean res2 = ser3.deleteUserByAccountSer(form.getId());
@@ -89,26 +104,28 @@ public class MedicareCardCtl {
             } else {
                 return ResponseResult.getMessageResult(false, "A027");
             }
-        }else{
+        } else {
             return ResponseResult.getMessageResult(false, "A028");
         }
     }
 
     /**
      * 根据信息添加医保人员信息
+     *
      * @param form
      * @return
      */
     @PostMapping("/addMedicareCard")
     public ResponseResult<Boolean> addMedicareCardByInformationCtl(@RequestBody @Valid AddMedicareCardForm form) {
-        if(ser1.countMedicareCardByAccountSer(form.getMedicareCardNum())==0){
-            boolean res = ser1.addMedicareCardByInformationSer(form.getMedicareCardNum(),form.getIdentityCardNum(),form.getMedicareType(),form.getMedicareStatus(),form.getMedicareName(),form.getMedicareSex(),form.getMedicareAge(),form.getMedicareNation(),form.getMedicareTime());
-            if(res){
+        if (ser1.countMedicareCardByAccountSer(form.getMedicareCardNum()) == 0
+                && ser1.countMedicareCardByIdentityNumSer(form.getIdentityCardNum()) == 0) {
+            boolean res = ser1.addMedicareCardByInformationSer(form.getMedicareCardNum(), form.getIdentityCardNum(), form.getMedicareType(), form.getMedicareStatus(), form.getMedicareName(), form.getMedicareSex(), form.getMedicareAge(), form.getMedicareNation(), form.getMedicareTime());
+            if (res) {
                 return ResponseResult.getSuccessResult(true, "A029", null);
-            }else{
+            } else {
                 return ResponseResult.getMessageResult(false, "A030");
             }
-        }else{
+        } else {
             return ResponseResult.getMessageResult(false, "A031");
         }
     }

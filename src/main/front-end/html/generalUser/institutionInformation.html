@@ -2,52 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>General User Welcome</title>
+    <title>Institution Information Search</title>
     <link rel="stylesheet" type="text/css" href="../../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tableDesign.css">
+    <link rel="stylesheet" type="text/css" href="../../css/popUpWindow.css">
 </head>
 <body>
-<div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/009.jpg" alt="头像">
-                </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
-            </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./personalInformation.html">个人信息维护</a></li>
-                    <li><a href="./medicareInformation.html">医保信息查询</a></li>
-                    <li><a href="./medicarePay.html">医保缴纳</a></li>
-                    <li><a href="./medicineInformation.html">药品信息查询</a></li>
-                    <li><a href="./treatmentInformation.html">诊疗项目信息查询</a></li>
-                    <li><a href="./serviceFacilityInformation.html">服务设施信息查询</a></li>
-                    <li><a href="./institutionInformation.html">定点机构信息查询</a></li>
-                    <li><a href="./strategyInformation.html">报销策略查询</a></li>
-                    <li><a href="./applyForReimbursement.html">申请报销</a></li>
-                    <li><a href="./recordingInformation.html">报销记录查询</a></li>
-                </ul>
-            </div>
+<div class="all" id="institutionInformationSearch">
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/001.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.account}}</li>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./personalInformation.html">个人信息维护</a></li>
+                        <li><a href="./medicareInformation.html">医保信息查询</a></li>
+                        <li><a href="./medicarePay.html">医保缴纳</a></li>
+                        <li><a href="./medicineInformation.html">药品信息查询</a>
+                        </li>
+                        <li><a href="./treatmentInformation.html">诊疗项目信息查询</a></li>
+                        <li><a href="./serviceFacilityInformation.html">服务设施信息查询</a></li>
+                        <li><a href="./institutionInformation.html"
+                               style="background-color: blueviolet;color: white;
+                               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">定点机构信息查询</a>
+                        </li>
+                        <li><a href="./strategyInformation.html">报销策略查询</a></li>
+                        <li><a href="./applyForReimbursement.html">申请报销</a></li>
+                        <li><a href="./recordingInformation.html">报销记录查询</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <br>
+                <br>
+                <div ref="tableRef">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>定点机构名称</th>
+                            <th>定点机构类别</th>
+                            <th>定点机构电话</th>
+                            <th>定点机构地址</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in result.list">
+                            <td>{{(pageInfo.currentPage-1)*pageInfo.onePageCount+index+1}}</td>
+                            <td>{{item.institution_name}}</td>
+                            <td>{{item.institution_type}}</td>
+                            <td>{{item.institution_telephone}}</td>
+                            <td>{{item.institution_address}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="pageSelectBox">
+                        <ul class="pagination" style="margin: auto;">
+                            <li v-for="n in result.pages">
+                                <a href="javascript:void(0);"
+                                   @click="search(n)"
+                                   :class="{'active' : n==result.pageNum}">{{n}}</a>
+                            </li>
+                            <li>
+                                <select @change="search(1)"
+                                        v-model="pageInfo.onePageCount">
+                                    <option v-for="item in pageCountList"
+                                            :value="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="blankWarnPanel" ref="blankWarnRef">
+                    <h1>无定点机构信息</h1>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 页脚 -->
     <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+        <div class="footerBlockLeft"></div>
+        <p>某报销机构</p>
+        <div class="footerBlockCenter"></div>
+        <p>{{param.systemDate}}</p>
     </div>
 </div>
 <script type="text/javascript" src="../../js/axios.js"></script>
@@ -55,37 +111,71 @@
 <script type="text/javascript" src="../../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#welcome",
+        el: "#institutionInformationSearch",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
+                "account": "",
             },
-            errorFlg: {
-                "accountFlg": false,
-                "loginFlag": false
+            result: {
+                "list": {}
             },
-            errorMsg: {
-                "accountMsg": "",
-                "loginMsg": ""
+            pageInfo: {
+                "currentPage": 1,
+                "onePageCount": 5,//一页有多少行数据
+            },
+            pageCountList: [5, 10, 20, 30, 50],//一页可以有多少行
+            error: {
+                "errorFlg": false,
+                "errorMsg": "",
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        created: function () {
+            // 数据初始化完成
+            this.search(1);
+        },
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            this.param.userName = sessionStorage.getItem("userName");
+            this.param.account = sessionStorage.getItem("account");
+            if (userRole == 0) {
+                this.param.userName = "";
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
         },
         methods: {
+            search: function (currentPage) {
+                this.error.errorMsg = "";
+                this.pageInfo.currentPage = currentPage;
+                axios.post("http://localhost:8000/medicare/api/searchAllInstitutionList",
+                    {
+                        "pageNum": this.pageInfo.currentPage,
+                        "pageSize": this.pageInfo.onePageCount
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.tableRef.style.display = "none";
+                            this.$refs.blankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.tableRef.style.display = "inline";
+                            this.$refs.blankWarnRef.style.display = "none";
+                            this.result = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
             logout: function () {
                 if (confirm("是否退出登录？")) {
                     sessionStorage.clear();

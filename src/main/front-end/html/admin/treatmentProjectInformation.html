@@ -2,52 +2,288 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin welcome</title>
+    <title>Treatment Information Management</title>
     <link rel="stylesheet" type="text/css" href="../../css/menu.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tableDesign.css">
+    <link rel="stylesheet" type="text/css" href="../../css/popUpWindow.css">
 </head>
 <body>
-<div class="all" id="welcome">
-    <!-- 顶部栏 -->
-    <div class="header_nav">
-        <h1>医疗保险报销系统</h1>
-        <a @click="logout()">注销</a>
-    </div>
-    <!-- 主体内容 -->
-    <div class="area row main">
-        <!-- 左边框（侧边栏） -->
-        <div class="area sidebar">
-            <div class="sidebarHead">
-                <div class="container">
-                    <img src="../../img/001.jpg" alt="头像">
-                </div>
-                <ul>
-                    <li>{{param.userName}}</li>
-                    <li>{{param.userRole}}</li>
-                </ul>
-            </div>
-            <div class="sidebarBody">
-                <ul>
-                    <li><a href="./userInformation.html">用户信息维护</a></li>
-                    <li><a href="./medicareCardInformation.html">医保人员信息维护</a></li>
-                    <li><a href="./workerInformation.html">审批人员信息维护</a></li>
-                    <li><a href="./medicineInformation.html">药品信息维护</a></li>
-                    <li><a href="./treatmentProjectInformation.html">诊疗项目信息维护</a></li>
-                    <li><a href="./serviceFacilityInformation.html">服务设施信息维护</a></li>
-                    <li><a href="./institutionInformation.html">定点机构信息维护</a></li>
-                    <li><a href="./strategyInformation.html">报销策略维护</a></li>
-                    <li><a href="./systemBankAccoutInformation.html">报销账户维护</a></li>
-                    <li><a href="./recordingInformation.html">报销记录维护</a></li>
-                </ul>
-            </div>
+<div class="all" id="treatmentInformationManagement">
+    <div style="min-height: 100%;">
+        <!-- 顶部栏 -->
+        <div class="header_nav">
+            <h1>医疗保险报销系统</h1>
+            <a @click="logout()">注销</a>
         </div>
-        <!-- 右侧详细信息 -->
-        <div class="area main_block">
-            <p>欢迎使用本系统进行医疗保险的报销。</p>
+        <!-- 主体内容 -->
+        <div class="area row main">
+            <!-- 左边框（侧边栏） -->
+            <div class="area sidebar">
+                <div class="sidebarHead">
+                    <div class="container">
+                        <img src="../../img/001.jpg" alt="头像">
+                    </div>
+                    <ul>
+                        <li>{{param.account}}</li>
+                        <li>{{param.userName}}</li>
+                        <li>{{param.userRole}}</li>
+                    </ul>
+                </div>
+                <div class="sidebarBody">
+                    <ul>
+                        <li><a href="./userInformation.html">用户信息维护</a></li>
+                        <li><a href="./medicareCardInformation.html">医保人员信息维护</a>
+                        </li>
+                        <li><a href="./workerInformation.html">审批人员信息维护</a></li>
+                        <li><a href="./medicineInformation.html">药品信息维护</a>
+                        </li>
+                        <li><a href="./treatmentProjectInformation.html"
+                               style="background-color: blueviolet;color: white;
+                               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">诊疗项目信息维护</a>
+                        </li>
+                        <li><a href="./serviceFacilityInformation.html">服务设施信息维护</a></li>
+                        <li><a href="./institutionInformation.html">定点机构信息维护</a></li>
+                        <li><a href="./strategyInformation.html">报销策略维护</a></li>
+                        <li><a href="./systemBankAccoutInformation.html">报销账户维护</a></li>
+                        <li><a href="./recordingInformation.html">报销记录维护</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 右侧详细信息 -->
+            <div class="area main_block">
+                <div>
+                    <button class="addButton rightFloat"
+                            type="button"
+                            @click="applyAddTreatment()">添加诊疗项目
+                    </button>
+                </div>
+                <br>
+                <div ref="tableRef">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>诊疗项目名称</th>
+                            <th>诊疗项目类别</th>
+                            <th>诊疗项目价格</th>
+                            <th>个人自费比例</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item,index) in result.list">
+                            <td>{{(pageInfo.currentPage-1)*pageInfo.onePageCount+index+1}}</td>
+                            <td>{{item.treatment_project_name}}</td>
+                            <td>{{item.treatment_project_type}}</td>
+                            <td>{{item.treatment_project_price}}</td>
+                            <td>{{item.treatment_project_percentage}}</td>
+                            <td>
+                                <button class="modifyButton"
+                                        type="button"
+                                        @click="applyModifyTreatment(item.treatment_project_num,item.treatment_project_name,item.treatment_project_type,item.treatment_project_price,item.treatment_project_percentage)">
+                                    修改
+                                </button>
+                                <button class="deleteButton"
+                                        type="button"
+                                        @click="deleteTreatment(item.treatment_project_num,item.treatment_project_name)">
+                                    删除
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="pageSelectBox">
+                        <ul class="pagination" style="margin: auto;">
+                            <li v-for="n in result.pages">
+                                <a href="javascript:void(0);"
+                                   @click="search(n)"
+                                   :class="{'active' : n==result.pageNum}">{{n}}</a>
+                            </li>
+                            <li>
+                                <select @change="search(1)"
+                                        v-model="pageInfo.onePageCount">
+                                    <option v-for="item in pageCountList"
+                                            :value="item">{{item}}
+                                    </option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="blankWarnPanel" ref="blankWarnRef">
+                    <h1>无诊疗项目信息</h1>
+                </div>
+            </div>
         </div>
     </div>
     <!-- 页脚 -->
     <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+        <div class="footerBlockLeft"></div>
+        <p>某报销机构</p>
+        <div class="footerBlockCenter"></div>
+        <p>{{param.systemDate}}</p>
+    </div>
+    <!-- 添加诊疗项目的弹窗 -->
+    <div class="popWindow"
+         ref="popWindowAddTreatment">
+        <div class="popDialog four">
+            <h1>添加诊疗项目</h1>
+            <div class="itemBody">
+                <div class="itemInput">
+                    <h2>诊疗项目名称：</h2>
+                    <input type="text"
+                           v-model="oneTreatment.name"
+                           @blur="check(1)"
+                           @focus="clear(1)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.nameFlg">{{oneTreatmentMsg.nameMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>诊疗项目类别：</h2>
+                    <select v-model="oneTreatment.type"
+                            @blur="check(2)"
+                            @focus="clear(2)">
+                        <option value="">请选择</option>
+                        <option value="0">全部统筹</option>
+                        <option value="1">部分统筹</option>
+                        <option value="2">不统筹</option>
+                    </select>
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.typeFlg">{{oneTreatmentMsg.typeMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>诊疗项目价格：</h2>
+                    <input type="number"
+                           step="0.01"
+                           min="0.01"
+                           max="99999999"
+                           v-model="oneTreatment.price"
+                           @blur="check(3)"
+                           @focus="clear(3)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.priceFlg">{{oneTreatmentMsg.priceMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>个人自费比例：</h2>
+                    <input type="number"
+                           step="0.01"
+                           min="0"
+                           max="1"
+                           v-model="oneTreatment.percentage"
+                           @blur="check(4)"
+                           @focus="clear(4)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.percentageFlg">{{oneTreatmentMsg.percentageMsg}}</span>
+                </div>
+            </div>
+            <div class="itemButton">
+                <button class="addButton "
+                        @click="addTreatment()">添加
+                </button>
+                <button class="backButton "
+                        style="margin-left: 15%;"
+                        @click="backToPageAdd()">返回
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- 修改诊疗项目的弹窗 -->
+    <div class="popWindow"
+         ref="popWindowModifyTreatment">
+        <div class="popDialog four">
+            <h1>修改诊疗项目</h1>
+            <div class="itemBody">
+                <div class="itemInput">
+                    <h2>诊疗项目名称：</h2>
+                    <input type="text"
+                           v-model="oneTreatment.name"
+                           @blur="check(1)"
+                           @focus="clear(1)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.nameFlg">{{oneTreatmentMsg.nameMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>诊疗项目类别：</h2>
+                    <select v-model="oneTreatment.type"
+                            @blur="check(2)"
+                            @focus="clear(2)">
+                        <option value="">请选择</option>
+                        <option value="0">全部统筹</option>
+                        <option value="1">部分统筹</option>
+                        <option value="2">不统筹</option>
+                    </select>
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.typeFlg">{{oneTreatmentMsg.typeMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>诊疗项目价格：</h2>
+                    <input type="number"
+                           step="0.01"
+                           min="0.01"
+                           max="99999999"
+                           v-model="oneTreatment.price"
+                           @blur="check(3)"
+                           @focus="clear(3)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.priceFlg">{{oneTreatmentMsg.priceMsg}}</span>
+                </div>
+                <div class="itemInput">
+                    <h2>个人自费比例：</h2>
+                    <input type="number"
+                           step="0.01"
+                           min="0"
+                           max="1"
+                           v-model="oneTreatment.percentage"
+                           @blur="check(4)"
+                           @focus="clear(4)">
+                    <span class="msgSpan"
+                          v-if="oneTreatmentFlg.percentageFlg">{{oneTreatmentMsg.percentageMsg}}</span>
+                </div>
+            </div>
+            <div class="itemButton">
+                <button class="modifyButton "
+                        @click="modifyTreatment()">修改
+                </button>
+                <button class="backButton "
+                        style="margin-left: 15%;"
+                        @click="backToPageModify()">返回
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加返回删除信息的弹窗 -->
+    <div class="popWindow2"
+         ref="popWindowBackDeleteMessage">
+        <div class="popDialog2 four">
+            <div class="content">
+                <h1>此诊疗项目已被使用</h1>
+                <h1>无法删除</h1>
+            </div>
+            <div class="footerButton">
+                <button class="backButton"
+                        @click="backFromPopWindow2Delete()"
+                        style=" ">确定
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- 添加返回添加信息的弹窗 -->
+    <div class="popWindow2"
+         ref="popWindowBackAddMessage">
+        <div class="popDialog2 four">
+            <div class="content">
+                <h1>诊疗项目已经存在</h1>
+                <h1>无法添加</h1>
+            </div>
+            <div class="footerButton">
+                <button class="backButton"
+                        @click="backFromPopWindow2Add()"
+                        style=" ">确定
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="../../js/axios.js"></script>
@@ -55,42 +291,278 @@
 <script type="text/javascript" src="../../js/message.js"></script>
 <script>
     var vue = new Vue({
-        el: "#welcome",
+        el: "#treatmentInformationManagement",
         data: {
             param: {
-                "userRole":"身份",
-                "userName":"",
-                "systemDate":"",
+                "userRole": "身份",
+                "userName": "",
+                "systemDate": "",
+                "account": "",
             },
-            errorFlg: {
-                "accountFlg": false,
-                "loginFlag": false
+            result: {
+                "list": {}
             },
-            errorMsg: {
-                "accountMsg": "",
-                "loginMsg": ""
+            pageInfo: {
+                "currentPage": 1,
+                "onePageCount": 5,//一页有多少行数据
+            },
+            oneTreatment: {
+                "num": "",
+                "name": "",
+                "type": "",
+                "price": "",
+                "percentage": ""
+            },
+            oneTreatmentFlg: {
+                "numFlg": false,
+                "nameFlg": false,
+                "typeFlg": false,
+                "priceFlg": false,
+                "percentageFlg": false
+            },
+            oneTreatmentMsg: {
+                "numMsg": "",
+                "nameMsg": "",
+                "typeMsg": "",
+                "priceMsg": "",
+                "percentageMsg": ""
+            },
+            pageCountList: [5, 10, 20, 30, 50],//一页可以有多少行
+            error: {
+                "errorFlg": false,
+                "errorMsg": "",
             }
         },
-        mounted:function (){
-            var userRole=sessionStorage.getItem("userRole");
-            var userName=sessionStorage.getItem("userName");
-            this.param.userName=userName;
-            if(userRole==0){
-                this.param.userRole="管理员";
-            }else if(userRole==1){
-                this.param.userRole="审批人员";
-            }else if(userRole==2){
-                this.param.userRole="医保人员";
+        created: function () {
+            // 数据初始化完成
+            this.search(1);
+        },
+        mounted: function () {
+            var userRole = sessionStorage.getItem("userRole");
+            this.param.userName = sessionStorage.getItem("userName");
+            this.param.account = sessionStorage.getItem("account");
+            if (userRole == 0) {
+                this.param.userName = "";
+                this.param.userRole = "管理员";
+            } else if (userRole == 1) {
+                this.param.userRole = "审批人员";
+            } else if (userRole == 2) {
+                this.param.userRole = "医保人员";
             }
             var systemDate = new Date();
-            this.param.systemDate=systemDate.getFullYear()+"-"+(systemDate.getMonth()+1)+"-"+systemDate.getDate();
+            this.param.systemDate = systemDate.getFullYear() + "-" + (systemDate.getMonth() + 1) + "-" + systemDate.getDate();
         },
         methods: {
+            search: function (currentPage) {
+                this.error.errorMsg = "";
+                this.pageInfo.currentPage = currentPage;
+                axios.post("http://localhost:8000/medicare/api/searchAllTreatmentList",
+                    {
+                        "pageNum": this.pageInfo.currentPage,
+                        "pageSize": this.pageInfo.onePageCount
+                    })
+                    .then(res => {
+                        if (res.data.result == null) {
+                            this.$refs.tableRef.style.display = "none";
+                            this.$refs.blankWarnRef.style.display = "block";
+                            var m = res.data.msgId;
+                            this.error.errorMsg = message.m;
+                        } else {
+                            this.$refs.tableRef.style.display = "inline";
+                            this.$refs.blankWarnRef.style.display = "none";
+                            this.result = res.data.result;
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.errorMsg);
+                    });
+            },
+            applyAddTreatment: function () {
+                this.$refs.popWindowAddTreatment.style.display = "block";
+            },
+            applyModifyTreatment: function (num, name, type, price, percentage) {
+                this.oneTreatment.num = num;
+                this.oneTreatment.name = name;
+                if (type == "全部统筹") {
+                    this.oneTreatment.type = "0";
+                } else if (type == "部分统筹") {
+                    this.oneTreatment.type = "1";
+                } else if (type == "不统筹") {
+                    this.oneTreatment.type = "2";
+                }
+                this.oneTreatment.price = price;
+                this.oneTreatment.percentage = percentage;
+                this.$refs.popWindowModifyTreatment.style.display = "block";
+            },
+            deleteTreatment: function (ID, name) {
+                if (confirm("是否删除“" + name + "“呢?")) {
+                    this.error.errorMsg = "";
+                    axios.post("http://localhost:8000/medicare/api/deleteTreatment", {
+                        "id": ID
+                    }).then(res => {
+                        if (res.data.msgId == "A053") {
+                            this.error.errorMsg = message.A053;
+                            alert('删除“' + name + '”诊疗项目失败');
+                        } else if (res.data.msgId == "A054") {
+                            this.error.errorMsg = message.A054;
+                            this.$refs.popWindowBackDeleteMessage.style.display = "block";
+                        } else if (res.data.msgId == "A052") {
+                            // 注册成功
+                            alert('删除“' + name + '”诊疗项目成功');
+                            this.search(1);
+                        }
+                    }).catch(error => {
+                        location.href = "./500.html";
+                    });
+                }
+            },
+            addTreatment: function () {
+                this.checkAll();
+                if (this.oneTreatmentFlg.nameFlg || this.oneTreatmentFlg.typeFlg || this.oneTreatmentFlg.priceFlg || this.oneTreatmentFlg.percentageFlg) {
+                    return;
+                }
+                this.error.errorMsg = "";
+                axios.post("http://localhost:8000/medicare/api/addTreatment", {
+                    "treatmentName": this.oneTreatment.name,
+                    "treatmentType": this.oneTreatment.type,
+                    "treatmentPrice": this.oneTreatment.price,
+                    "treatmentPercentage": this.oneTreatment.percentage
+                }).then(res => {
+                    if (res.data.msgId == "A056") {
+                        this.error.errorMsg = message.A056;
+                        alert('添加“' + this.oneTreatment.name + '”诊疗项目失败');
+                        this.backToPageAdd();
+                    } else if (res.data.msgId == "A057") {
+                        this.$refs.popWindowBackAddMessage.style.display = "inline";
+                    } else if (res.data.msgId == "A055") {
+                        // 注册成功
+                        alert('添加“' + this.oneTreatment.name + '”诊疗项目成功');
+                        this.backToPageAdd();
+                        this.search(this.pageInfo.currentPage);
+                    }
+                }).catch(error => {
+                    location.href = "./500.html";
+                });
+            },
+            modifyTreatment: function () {
+                this.checkAll();
+                if (this.oneTreatmentFlg.nameFlg || this.oneTreatmentFlg.typeFlg || this.oneTreatmentFlg.priceFlg || this.oneTreatmentFlg.percentageFlg) {
+                    return;
+                }
+                this.error.errorMsg = "";
+                axios.post("http://localhost:8000/medicare/api/modifyTreatment", {
+                    "treatmentNum": this.oneTreatment.num,
+                    "treatmentName": this.oneTreatment.name,
+                    "treatmentType": this.oneTreatment.type,
+                    "treatmentPrice": this.oneTreatment.price,
+                    "treatmentPercentage": this.oneTreatment.percentage
+                }).then(res => {
+                    if (res.data.msgId == "A059") {
+                        this.error.errorMsg = message.A059;
+                        alert('修改“' + this.oneTreatment.name + '”诊疗项目失败');
+                        this.backToPageModify();
+                    } else if (res.data.msgId == "A058") {
+                        // 修改成功
+                        alert('修改“' + this.oneTreatment.name + '”诊疗项目成功');
+                        this.backToPageModify();
+                        this.search(this.pageInfo.currentPage);
+                    }
+                }).catch(error => {
+                    location.href = "./500.html";
+                });
+            },
+            backToPageAdd: function () {
+                this.$refs.popWindowAddTreatment.style.display = "none";
+                this.blank();
+                this.clearAll();
+            },
+            backToPageModify: function () {
+                this.$refs.popWindowModifyTreatment.style.display = "none";
+                this.blank();
+                this.clearAll();
+            },
+            backFromPopWindow2Add: function () {
+                this.$refs.popWindowBackAddMessage.style.display = "none";
+                this.backToPageAdd();
+            },
+            backFromPopWindow2Delete: function () {
+                this.$refs.popWindowBackDeleteMessage.style.display = "none";
+            },
             logout: function () {
                 if (confirm("是否退出登录？")) {
                     sessionStorage.clear();
                     location.replace("../login.html");
                 }
+            },
+            check: function (type) {
+                if (type == 1) {
+                    if (this.oneTreatment.name == null || this.oneTreatment.name == "") {
+                        this.oneTreatmentFlg.nameFlg = true;
+                        this.oneTreatmentMsg.nameMsg = "请输入诊疗项目名称";
+                    }
+                } else if (type == 2) {
+                    if (this.oneTreatment.type == null || this.oneTreatment.type == "") {
+                        this.oneTreatmentFlg.typeFlg = true;
+                        this.oneTreatmentMsg.typeMsg = "请选择诊疗项目类别";
+                    }
+                } else if (type == 3) {
+                    var reg1 = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+                    var reg2 = /^[0-9]{1,8}(.[0-9]{1,2})?$/;
+                    if (this.oneTreatment.price == null || this.oneTreatment.price == "") {
+                        this.oneTreatmentFlg.priceFlg = true;
+                        this.oneTreatmentMsg.priceMsg = "请输入诊疗项目价格";
+                    } else if (!reg1.test(this.oneTreatment.price)) {
+                        this.oneTreatmentFlg.priceFlg = true;
+                        this.oneTreatmentMsg.priceMsg = "请输入正数";
+                    } else if (!reg2.test(this.oneTreatment.price)) {
+                        this.oneTreatmentFlg.priceFlg = true;
+                        this.oneTreatmentMsg.priceMsg = "数字位数小于8位";
+                    }
+                } else if (type == 4) {
+                    var reg1 = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+                    if (this.oneTreatment.percentage == null || this.oneTreatment.percentage == "") {
+                        this.oneTreatmentFlg.percentageFlg = true;
+                        this.oneTreatmentMsg.percentageMsg = "请输入个人自费比例";
+                    } else if (!reg1.test(this.oneTreatment.percentage)) {
+                        this.oneTreatmentFlg.percentageFlg = true;
+                        this.oneTreatmentMsg.percentageMsg = "请输入正数";
+                    }
+                }
+            },
+            checkAll: function () {
+                this.check(1);
+                this.check(2);
+                this.check(3);
+                this.check(4);
+            },
+            clear: function (type) {
+                //清楚错误状态
+                if (type == 1) {
+                    this.oneTreatmentFlg.nameFlg = false;
+                    this.oneTreatmentMsg.nameMsg = "";
+                } else if (type == 2) {
+                    this.oneTreatmentFlg.typeFlg = false;
+                    this.oneTreatmentMsg.typeMsg = "";
+                } else if (type == 3) {
+                    this.oneTreatmentFlg.priceFlg = false;
+                    this.oneTreatmentMsg.priceMsg = "";
+                }else if (type == 4) {
+                    this.oneTreatmentFlg.percentageFlg = false;
+                    this.oneTreatmentMsg.percentageMsg = "";
+                }
+            },
+            clearAll: function () {
+                this.clear(1);
+                this.clear(2);
+                this.clear(3);
+                this.clear(4);
+            },
+            blank: function () {
+                this.oneTreatment.num = "";
+                this.oneTreatment.name = "";
+                this.oneTreatment.type = "";
+                this.oneTreatment.price = "";
+                this.oneTreatment.percentage = "";
             }
         }
     })

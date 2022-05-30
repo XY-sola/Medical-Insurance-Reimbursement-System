@@ -116,7 +116,10 @@
     </div>
     <!-- 页脚 -->
     <div class="area footer">
-        <p>某报销机构&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{param.systemDate}}</p>
+        <div class="footerBlockLeft"></div>
+        <p>某报销机构</p>
+        <div class="footerBlockCenter"></div>
+        <p>{{param.systemDate}}</p>
     </div>
     <!-- 添加医保人员用户的弹窗 -->
     <div class="popWindow"
@@ -126,7 +129,7 @@
             <h1>添加审批人员</h1>
             <div class="itemBody">
                 <div class="itemInput">
-                    <h2>工号：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>工&emsp;&emsp;号：</h2>
                     <input type="text"
                            v-model="oneWorker.workerNum"
                            @blur="check(1)"
@@ -144,7 +147,7 @@
                           v-if="oneWorkerFlg.identityNumFlg">{{oneWorkerMsg.identityNumMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>姓名：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>姓&emsp;&emsp;名：</h2>
                     <input type="text"
                            v-model="oneWorker.name"
                            @blur="check(3)"
@@ -153,7 +156,7 @@
                           v-if="oneWorkerFlg.nameFlg">{{oneWorkerMsg.nameMsg}}</span>
                 </div>
                 <div class="itemInput">
-                    <h2>性别：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+                    <h2>性&emsp;&emsp;别：</h2>
                     <select v-model="oneWorker.sex"
                             @blur="check(4)"
                             @focus="clear(4)">
